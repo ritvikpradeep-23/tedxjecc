@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Playfair Display", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-tedx-black: #0d0d0d;
+  --color-tedx-charcoal: #1a1a1a;
+  --color-tedx-charcoal-light: #232323;
+  --color-tedx-red: #e62b1e;
+  --color-tedx-red-dark: #c8102e;
+
+  --animate-fade-up: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Plain (non-@theme) keyframes used via arbitrary `animate-[...]` utilities. */
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-tedx-black);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--color-tedx-red);
+  color: #ffffff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-tedx-black);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-tedx-red-dark);
+  border-radius: 9999px;
+}
+
+/* Visible, on-brand keyboard focus ring everywhere — buttons, links, inputs. */
+:focus-visible {
+  outline: 2px solid var(--color-tedx-red);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.reveal {
+  opacity: 0;
+}
+
+.reveal.is-visible {
+  animation: var(--animate-fade-up);
+}
+
+/* Faint grain texture layered over section backgrounds so pure black never reads as empty. */
+.bg-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+@layer components {
+  /* Type scale — defined once, reused everywhere instead of ad-hoc text-[...] sizes. */
+  .heading-hero {
+    @apply font-display font-black leading-[0.95] tracking-tight text-6xl sm:text-8xl;
+  }
+  .heading-xl {
+    @apply font-display font-bold leading-tight tracking-tight text-4xl sm:text-5xl;
+  }
+  .heading-lg {
+    @apply font-display font-bold leading-snug tracking-tight text-2xl sm:text-3xl;
+  }
+  .heading-md {
+    @apply font-display font-bold leading-snug text-lg sm:text-xl;
+  }
+  .body-text {
+    @apply text-white/70 text-base sm:text-lg leading-relaxed;
+  }
+  .caption-label {
+    @apply text-tedx-red font-semibold tracking-[0.25em] text-xs uppercase;
+  }
+}
