@@ -49,7 +49,14 @@ function placeholderContact(name) {
   };
 }
 
-export const featuredSpeakers = [
+// Fills in placeholder linkedin/whatsapp/email, but any of those fields you
+// set directly on a person always wins — this can go anywhere in that
+// person's object, order doesn't matter.
+function withContact(person) {
+  return { ...placeholderContact(person.name), ...person };
+}
+
+const rawFeaturedSpeakers = [
   {
     name: "Ananya Rao",
     photo: "https://i.pravatar.cc/300?img=32",
@@ -58,7 +65,6 @@ export const featuredSpeakers = [
     talkDescription: "Why the most responsible AI systems are the ones that know the limits of their own knowledge.",
     longBio:
       "Ananya studies the boundary between machine confidence and machine competence. Her work with model uncertainty has shaped how several labs think about deploying AI in high-stakes settings. She's spoken at three national conferences on responsible AI.",
-    ...placeholderContact("Ananya Rao"),
   },
   {
     name: "Rohan Mehta",
@@ -68,7 +74,6 @@ export const featuredSpeakers = [
     talkDescription: "How founder-speed thinking can compress a decade of climate R&D into eighteen months.",
     longBio:
       "Rohan founded his first carbon-capture startup at 22, straight out of a mechanical engineering degree. He now advises two more, and spends most of his time convincing investors that climate hardware can move as fast as software.",
-    ...placeholderContact("Rohan Mehta"),
   },
   {
     name: "Dr. Leela Nair",
@@ -78,7 +83,6 @@ export const featuredSpeakers = [
     talkDescription: "What fMRI scans of jazz musicians reveal about where new ideas actually come from.",
     longBio:
       "Dr. Nair runs a cognitive neuroscience lab studying creativity under improvisational pressure. Her research has been featured in several science journals, and she still plays semi-professional jazz piano on weekends.",
-    ...placeholderContact("Leela Nair"),
   },
   {
     name: "Kabir Sen",
@@ -88,7 +92,6 @@ export const featuredSpeakers = [
     talkDescription: "How documentary ethics have to evolve when video can no longer be trusted at face value.",
     longBio:
       "Kabir has spent a decade filming conflict zones and quiet rural stories alike. His latest project examines how synthetic media is changing what audiences believe — and what filmmakers owe them in return.",
-    ...placeholderContact("Kabir Sen"),
   },
   {
     name: "Meera Iyer",
@@ -98,11 +101,10 @@ export const featuredSpeakers = [
     talkDescription: "Small, cheap design interventions that measurably improve mental health in dense cities.",
     longBio:
       "Meera designs public spaces for municipal governments across the country, with a focus on low-cost interventions that improve wellbeing. She believes the best urban design is the kind residents barely notice.",
-    ...placeholderContact("Meera Iyer"),
   },
 ];
 
-export const openCallSpeakers = [
+const rawOpenCallSpeakers = [
   {
     name: "Arjun Vashisht",
     photo: "https://i.pravatar.cc/300?img=51",
@@ -111,7 +113,6 @@ export const openCallSpeakers = [
     talkDescription: "Lessons from a thousand stack traces, and why the bug is rarely where you first look.",
     longBio:
       "Arjun spends most nights deep in compiler errors and most mornings explaining them to confused juniors. He's building a small open-source tool to help students debug faster — and better understand why they were stuck.",
-    ...placeholderContact("Arjun Vashisht"),
   },
   {
     name: "Sneha Kulkarni",
@@ -121,7 +122,6 @@ export const openCallSpeakers = [
     talkDescription: "How a ₹2,000 budget and a hostel Wi-Fi connection became a real, paying business.",
     longBio:
       "Sneha started selling handmade notebooks out of her hostel room in first year. Eighteen months later, she runs a small team and ships across three cities — all while finishing her degree.",
-    ...placeholderContact("Sneha Kulkarni"),
   },
   {
     name: "Farhan Ali",
@@ -131,7 +131,6 @@ export const openCallSpeakers = [
     talkDescription: "What competitive para-athletics taught him about setting goals nobody else can see.",
     longBio:
       "Farhan competes nationally in para-athletics after an accident changed his relationship with his own body. He now coaches younger athletes and speaks about redefining what a finish line even means.",
-    ...placeholderContact("Farhan Ali"),
   },
   {
     name: "Priya Deshmukh",
@@ -141,7 +140,6 @@ export const openCallSpeakers = [
     talkDescription: "Why she travels to remote villages recording folk songs before the last singers are gone.",
     longBio:
       "Priya has spent three years documenting disappearing folk traditions from her grandmother's region. She performs these songs herself, blending them with contemporary arrangements for new audiences.",
-    ...placeholderContact("Priya Deshmukh"),
   },
   {
     name: "Devansh Kapoor",
@@ -151,9 +149,11 @@ export const openCallSpeakers = [
     talkDescription: "What years of scavenging old electronics taught him about resourceful engineering.",
     longBio:
       "Devansh builds functioning robots almost entirely from parts salvaged from broken appliances. His workshop, run out of a garage, has produced three competition-winning bots on a shoestring budget.",
-    ...placeholderContact("Devansh Kapoor"),
   },
 ];
+
+export const featuredSpeakers = rawFeaturedSpeakers.map(withContact);
+export const openCallSpeakers = rawOpenCallSpeakers.map(withContact);
 
 export const ticketTiers = [
   {
@@ -174,7 +174,7 @@ export const ticketTiers = [
 
 // Tier 1 — overall event leadership. Displayed larger/more prominent than
 // the tier 2/3 team blocks below.
-export const leadership = {
+const rawLeadership = {
   description: "Overall event leadership, final decisions, and the required TEDx/institutional liaison.",
   members: [
     {
@@ -184,7 +184,6 @@ export const leadership = {
       description: "Oversees speaker relations, curation, and the overall event vision.",
       longBio:
         "Ishaan has been part of the organizing committee since its first year and now leads overall event direction, shaping the speaker lineup and representing TEDxJECC to the college administration.",
-      ...placeholderContact("Ishaan Kapoor"),
     },
     {
       name: "Diya Sharma",
@@ -193,7 +192,6 @@ export const leadership = {
       description: "Oversees operations and cross-team coordination across all three tiers.",
       longBio:
         "Diya keeps all three tiers moving in sync — from budgeting to volunteer logistics — and focuses on the operational backbone that makes event day possible.",
-      ...placeholderContact("Diya Sharma"),
     },
     {
       name: "Prof. Meenal Kulkarni",
@@ -202,25 +200,32 @@ export const leadership = {
       description: "Serves as the required TEDx institutional liaison and signs off on content and logistics.",
       longBio:
         "Prof. Kulkarni oversees compliance with TEDx's institutional guidelines and serves as the primary point of contact between the organizing committee and college administration. She reviews the final speaker lineup and stage content before the event.",
-      ...placeholderContact("Meenal Kulkarni"),
     },
   ],
 };
 
+export const leadership = {
+  ...rawLeadership,
+  members: rawLeadership.members.map(withContact),
+};
+
 // Generic, data-driven bio for the tier 2/3 team heads/members below — swap
-// in real bios once collected. Keeps the source data itself short (name + photo).
+// in real bios once collected. Keeps the source data itself short (name +
+// photo). Any `bio`/`linkedin`/`whatsapp`/`email` you set directly on a
+// person always wins over the generated ones — can go anywhere in that
+// person's object.
 function withProfile(person, { team, role }) {
-  const bio =
+  const defaultBio =
     role === "Head"
       ? `${person.name} leads the ${team} team, setting direction and keeping the crew aligned with the rest of TEDxJECC.`
       : `${person.name} is a core member of the ${team} team, contributing hands-on to everything the team ships.`;
 
   return {
+    bio: defaultBio,
+    ...placeholderContact(person.name),
     ...person,
     role,
     team,
-    bio,
-    ...placeholderContact(person.name),
   };
 }
 
