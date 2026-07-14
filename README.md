@@ -1,6 +1,6 @@
-# TEDxJECC Website — Content & Codebase Guide
+# TEDxJEC Website — Content & Codebase Guide
 
-This is a reference doc for maintaining the TEDxJECC site. It covers how the
+This is a reference doc for maintaining the TEDxJEC site. It covers how the
 site works in plain English, how to update people's info day-to-day, and
 which files are safe to touch vs. which control layout/functionality.
 

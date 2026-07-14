@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="relative max-w-6xl mx-auto flex flex-col items-center text-center gap-6">
         <a href="#hero" className="font-display text-xl font-bold text-white">
           TED<span className="text-tedx-red">x</span>
-          <span className="text-white">JECC</span>
+          <span className="text-white">JEC</span>
         </a>
 
         <p className="text-white/50 text-sm max-w-md">{eventInfo.affiliation}</p>

@@ -32,7 +32,7 @@ export default function AdminLogin({ onSuccess }) {
   return (
     <div className="min-h-screen bg-tedx-black flex items-center justify-center px-6">
       <form onSubmit={handleSubmit} className="w-full max-w-sm bg-tedx-charcoal border border-white/10 rounded-xl p-8">
-        <h1 className="text-white text-xl font-bold mb-1">TEDxJECC Admin</h1>
+        <h1 className="text-white text-xl font-bold mb-1">TEDxJEC Admin</h1>
         <p className="text-white/50 text-sm mb-6">Enter the admin password to continue.</p>
         <input
           type="password"

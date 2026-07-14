@@ -1,14 +1,14 @@
-// Central config for TEDxJECC. Swap placeholder names/photos/copy with real
+// Central config for TEDxJEC. Swap placeholder names/photos/copy with real
 // data as it becomes available — nothing elsewhere in the app should need to change.
 
 export const eventInfo = {
-  name: "TEDxJECC",
+  name: "TEDxJEC",
   date: "Saturday, 10 October 2026",
   time: "10:00 AM – 1:20 PM",
   venue: "College Auditorium",
   tagline: "Ideas worth spreading, right here on campus",
   affiliation: "Organized in association with IEEE Student Chapter & Dept. of Computer Science",
-  contactEmail: "team@tedxjecc.org",
+  contactEmail: "team@tedxjec.org",
 };
 
 // Placeholder event theme — swap `name`/copy for the real one once decided.
@@ -45,7 +45,7 @@ function placeholderContact(name) {
   return {
     linkedin: `https://linkedin.com/in/${slug}`,
     whatsapp: "https://wa.me/91XXXXXXXXXX",
-    email: `${slug}@tedxjecc.org`,
+    email: `${slug}@tedxjec.org`,
   };
 }
 
@@ -55,6 +55,14 @@ function placeholderContact(name) {
 function withContact(person) {
   return { ...placeholderContact(person.name), ...person };
 }
+
+// Shared placeholder for Meet the Team members who haven't been confirmed
+// yet. To fill someone in once you have their real info, replace `name`,
+// `photo`, and the bio/contact fields directly on their entry below — see
+// README.md for the full walkthrough.
+const ANON_PHOTO = "/images/avatar-placeholder.svg";
+const ANON_BIO = "To be announced";
+const anonContact = { linkedin: "", whatsapp: "", email: "" };
 
 const rawFeaturedSpeakers = [
   {
@@ -174,32 +182,37 @@ export const ticketTiers = [
 
 // Tier 1 — overall event leadership. Displayed larger/more prominent than
 // the tier 2/3 team blocks below.
+//
+// Names/photos below are unconfirmed placeholders — the `role` field (what
+// each seat is for) is real and should stay as-is. Once a person is
+// confirmed, replace their `name`, `photo`, `description`, `longBio`, and
+// contact fields directly.
 const rawLeadership = {
   description: "Overall event leadership, final decisions, and the required TEDx/institutional liaison.",
   members: [
     {
-      name: "Ishaan Kapoor",
-      photo: "https://i.pravatar.cc/300?img=33",
+      name: "TBD",
+      photo: ANON_PHOTO,
       role: "Co-Organizer",
-      description: "Oversees speaker relations, curation, and the overall event vision.",
-      longBio:
-        "Ishaan has been part of the organizing committee since its first year and now leads overall event direction, shaping the speaker lineup and representing TEDxJECC to the college administration.",
+      description: ANON_BIO,
+      longBio: ANON_BIO,
+      ...anonContact,
     },
     {
-      name: "Diya Sharma",
-      photo: "https://i.pravatar.cc/300?img=48",
+      name: "TBD",
+      photo: ANON_PHOTO,
       role: "Co-Organizer",
-      description: "Oversees operations and cross-team coordination across all three tiers.",
-      longBio:
-        "Diya keeps all three tiers moving in sync — from budgeting to volunteer logistics — and focuses on the operational backbone that makes event day possible.",
+      description: ANON_BIO,
+      longBio: ANON_BIO,
+      ...anonContact,
     },
     {
-      name: "Prof. Meenal Kulkarni",
-      photo: "https://i.pravatar.cc/300?img=70",
+      name: "TBD",
+      photo: ANON_PHOTO,
       role: "Faculty Coordinator",
-      description: "Serves as the required TEDx institutional liaison and signs off on content and logistics.",
-      longBio:
-        "Prof. Kulkarni oversees compliance with TEDx's institutional guidelines and serves as the primary point of contact between the organizing committee and college administration. She reviews the final speaker lineup and stage content before the event.",
+      description: ANON_BIO,
+      longBio: ANON_BIO,
+      ...anonContact,
     },
   ],
 };
@@ -217,7 +230,7 @@ export const leadership = {
 function withProfile(person, { team, role }) {
   const defaultBio =
     role === "Head"
-      ? `${person.name} leads the ${team} team, setting direction and keeping the crew aligned with the rest of TEDxJECC.`
+      ? `${person.name} leads the ${team} team, setting direction and keeping the crew aligned with the rest of TEDxJEC.`
       : `${person.name} is a core member of the ${team} team, contributing hands-on to everything the team ships.`;
 
   return {
@@ -237,27 +250,32 @@ function buildTeam(team) {
   };
 }
 
+// Names/photos for every head and member below are unconfirmed placeholders
+// — team names and descriptions are real and should stay as-is. Once a
+// person is confirmed, replace their `name` and `photo` directly (add
+// `bio`/`linkedin`/`whatsapp`/`email` too if you have them — they'll
+// override the "To be announced" placeholder automatically).
 const rawTier2Teams = [
   {
     id: "treasurer-budgeting",
     name: "Treasurer & Budgeting",
     description: "Tracks the budget, manages vendor and sponsor payments, and leads sponsorship outreach.",
-    head: { name: "Ansh Dixit", photo: "https://i.pravatar.cc/300?img=60" },
+    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "Riya Thakur", photo: "https://i.pravatar.cc/300?img=61" },
-      { name: "Om Bajaj", photo: "https://i.pravatar.cc/300?img=62" },
-      { name: "Vivaan Joshi", photo: "https://i.pravatar.cc/300?img=25" },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     ],
   },
   {
     id: "volunteer",
     name: "Volunteer",
     description: "Recruits volunteers and manages on-ground logistics — ushers, registration, seating, and hospitality.",
-    head: { name: "Vansh Rawat", photo: "https://i.pravatar.cc/300?img=64" },
+    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "Ishita Grover", photo: "https://i.pravatar.cc/300?img=65" },
-      { name: "Parth Wadhwa", photo: "https://i.pravatar.cc/300?img=66" },
-      { name: "Gauri Nanda", photo: "https://i.pravatar.cc/300?img=67" },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     ],
   },
 ];
@@ -267,33 +285,33 @@ const rawTier3Teams = [
     id: "media",
     name: "Media",
     description: "Photography, videography, social media, and all written/visual content for the event.",
-    head: { name: "Aditi Verma", photo: "https://i.pravatar.cc/300?img=29" },
+    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "Kunal Bhatt", photo: "https://i.pravatar.cc/300?img=30" },
-      { name: "Simran Kaur", photo: "https://i.pravatar.cc/300?img=31" },
-      { name: "Rudra Pillai", photo: "https://i.pravatar.cc/300?img=34" },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     ],
   },
   {
     id: "ambience",
     name: "Ambience",
     description: "Stage design, venue decor, signage, and the overall look of the space.",
-    head: { name: "Aryan Khanna", photo: "https://i.pravatar.cc/300?img=43" },
+    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "Naina Reddy", photo: "https://i.pravatar.cc/300?img=46" },
-      { name: "Dhruv Saxena", photo: "https://i.pravatar.cc/300?img=49" },
-      { name: "Pihu Agarwal", photo: "https://i.pravatar.cc/300?img=50" },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     ],
   },
   {
     id: "tech",
     name: "Tech",
     description: "AV/lighting coordination, the recording feed, and the event website.",
-    head: { name: "Aditya Rana", photo: "https://i.pravatar.cc/300?img=52" },
+    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "Ridhima Sood", photo: "https://i.pravatar.cc/300?img=53" },
-      { name: "Karan Oberoi", photo: "https://i.pravatar.cc/300?img=54" },
-      { name: "Esha Bakshi", photo: "https://i.pravatar.cc/300?img=55" },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     ],
   },
 ];

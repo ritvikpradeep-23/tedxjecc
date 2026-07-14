@@ -52,8 +52,8 @@ export default function TeamBlock({ team, index, compact = false }) {
               <PersonCard person={team.head} label="Head" size="lg" onOpen={setSelected} />
               <div className="w-full h-px bg-white/10" />
               <div className="grid grid-cols-3 gap-4 sm:gap-6 w-full max-w-xs">
-                {team.members.map((member) => (
-                  <PersonCard key={member.name} person={member} label="Member" size="sm" onOpen={setSelected} />
+                {team.members.map((member, i) => (
+                  <PersonCard key={`${member.name}-${i}`} person={member} label="Member" size="sm" onOpen={setSelected} />
                 ))}
               </div>
             </div>
@@ -62,8 +62,8 @@ export default function TeamBlock({ team, index, compact = false }) {
               <PersonCard person={team.head} label="Head" size="lg" onOpen={setSelected} />
               <div className="hidden lg:block w-px self-stretch bg-white/10" />
               <div className="grid grid-cols-3 gap-5 sm:gap-8">
-                {team.members.map((member) => (
-                  <PersonCard key={member.name} person={member} label="Member" size="sm" onOpen={setSelected} />
+                {team.members.map((member, i) => (
+                  <PersonCard key={`${member.name}-${i}`} person={member} label="Member" size="sm" onOpen={setSelected} />
                 ))}
               </div>
             </div>

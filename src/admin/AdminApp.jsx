@@ -79,7 +79,7 @@ export default function AdminApp() {
     <div className="min-h-screen bg-tedx-black px-6 py-10">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-10">
-          <h1 className="text-white text-2xl font-bold">TEDxJECC Admin</h1>
+          <h1 className="text-white text-2xl font-bold">TEDxJEC Admin</h1>
           <button
             type="button"
             onClick={handleLogout}

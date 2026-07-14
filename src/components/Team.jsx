@@ -31,7 +31,7 @@ export default function Team() {
         <p className="text-white/55 text-sm max-w-2xl mb-8">{leadership.description}</p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {leadership.members.map((person, i) => (
-            <OrganizerCard key={person.name} organizer={person} delay={i * 100} />
+            <OrganizerCard key={`${person.name}-${i}`} organizer={person} delay={i * 100} />
           ))}
         </div>
       </Reveal>

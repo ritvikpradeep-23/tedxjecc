@@ -39,7 +39,7 @@ export default function Hero() {
             <span className="text-white">TED</span>
             <span className="text-tedx-red">x</span>
             <br />
-            <span className="text-white">JECC</span>
+            <span className="text-white">JEC</span>
           </h1>
         </Reveal>
 

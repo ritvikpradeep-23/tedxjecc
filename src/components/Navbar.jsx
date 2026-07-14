@@ -49,7 +49,7 @@ export default function Navbar() {
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 sm:px-8 py-4">
         <a href="#hero" className="font-display text-2xl font-bold tracking-tight text-white">
           TED<span className="text-tedx-red">x</span>
-          <span className="text-white">JECC</span>
+          <span className="text-white">JEC</span>
         </a>
 
         <ul className="hidden md:flex items-center gap-10">

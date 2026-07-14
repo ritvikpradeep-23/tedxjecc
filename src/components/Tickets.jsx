@@ -29,9 +29,9 @@ function TicketCard({ tier, delay }) {
   const [fieldError, setFieldError] = useState("");
 
   const mailtoHref = (name) => {
-    const subject = encodeURIComponent(`TEDxJECC Ticket Request — ${tier.name}`);
+    const subject = encodeURIComponent(`TEDxJEC Ticket Request — ${tier.name}`);
     const body = encodeURIComponent(
-      `Hi TEDxJECC team,\n\nI'd like to reserve a ${tier.name} ticket (${tier.price}).\n\nName: ${name}\nDepartment & Year:\nPhone:\n`
+      `Hi TEDxJEC team,\n\nI'd like to reserve a ${tier.name} ticket (${tier.price}).\n\nName: ${name}\nDepartment & Year:\nPhone:\n`
     );
     return `mailto:${eventInfo.contactEmail}?subject=${subject}&body=${body}`;
   };
