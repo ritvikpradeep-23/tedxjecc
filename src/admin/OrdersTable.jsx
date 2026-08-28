@@ -30,7 +30,7 @@ function CheckedInBadge({ checkedInAt }) {
   );
 }
 
-export default function OrdersTable({ orders, totalRevenue, onDelete }) {
+export default function OrdersTable({ orders, totalRevenue, onDelete, onResendEmail }) {
   const handleDelete = (o) => {
     if (window.confirm("Are you sure you want to delete this response? This cannot be undone.")) {
       onDelete(o.id);
@@ -62,7 +62,7 @@ export default function OrdersTable({ orders, totalRevenue, onDelete }) {
               <th className="px-4 py-3 whitespace-nowrap">Status</th>
               <th className="px-4 py-3 whitespace-nowrap">Checked In</th>
               <th className="px-4 py-3 whitespace-nowrap">Submitted</th>
-              <th className="px-4 py-3 whitespace-nowrap">Delete</th>
+              <th className="px-4 py-3 whitespace-nowrap">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/10">
@@ -80,14 +80,26 @@ export default function OrdersTable({ orders, totalRevenue, onDelete }) {
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap">{new Date(o.created_at).toLocaleString()}</td>
                 <td className="px-4 py-3">
-                  <button
-                    type="button"
-                    onClick={() => handleDelete(o)}
-                    className="text-red-400 hover:text-red-300 text-xs font-semibold uppercase tracking-wide cursor-pointer"
-                    aria-label={`Delete order from ${o.buyer_name}`}
-                  >
-                    Delete
-                  </button>
+                  <div className="flex gap-3">
+                    {o.status === "approved" && !o.is_test && (
+                      <button
+                        type="button"
+                        onClick={() => onResendEmail(o.id)}
+                        className="text-white/50 hover:text-white text-xs font-semibold uppercase tracking-wide cursor-pointer"
+                        aria-label={`Resend ticket email to ${o.buyer_name}`}
+                      >
+                        Resend Email
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(o)}
+                      className="text-red-400 hover:text-red-300 text-xs font-semibold uppercase tracking-wide cursor-pointer"
+                      aria-label={`Delete order from ${o.buyer_name}`}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

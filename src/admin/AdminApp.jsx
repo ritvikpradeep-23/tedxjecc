@@ -14,6 +14,7 @@ export default function AdminApp() {
   const [testTier, setTestTier] = useState(ticketTiers[0]?.id || "");
   const [testTicketUrl, setTestTicketUrl] = useState(null);
   const [generatingTest, setGeneratingTest] = useState(false);
+  const [reviewNotice, setReviewNotice] = useState(null); // { type: 'error'|'success', text }
   const statusRef = useRef(status);
   statusRef.current = status;
 
@@ -92,12 +93,27 @@ export default function AdminApp() {
 
   const handleReviewOrder = async (id, reviewStatus) => {
     setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, status: reviewStatus } : o)));
-    await fetch(`/api/orders/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ status: reviewStatus }),
-    });
+    setReviewNotice(null);
+    try {
+      const res = await fetch(`/api/orders/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ status: reviewStatus }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (reviewStatus === "approved") {
+        setReviewNotice(
+          data.emailSent
+            ? { type: "success", text: "Approved — ticket email sent." }
+            : { type: "error", text: "Approved, but the ticket email failed to send. Check Resend setup, then resend manually if needed." }
+        );
+      }
+    } catch {
+      if (reviewStatus === "approved") {
+        setReviewNotice({ type: "error", text: "Approved, but couldn't confirm whether the email sent — check your connection." });
+      }
+    }
     loadData();
   };
 
@@ -192,6 +208,26 @@ export default function AdminApp() {
           </div>
         </section>
 
+        {reviewNotice && (
+          <div
+            className={`mb-6 rounded-lg border p-4 text-sm flex items-center justify-between gap-4 ${
+              reviewNotice.type === "error"
+                ? "bg-red-500/10 border-red-500/40 text-red-300"
+                : "bg-tedx-red/10 border-tedx-red/40 text-white"
+            }`}
+          >
+            <span>{reviewNotice.text}</span>
+            <button
+              type="button"
+              onClick={() => setReviewNotice(null)}
+              className="text-white/50 hover:text-white cursor-pointer shrink-0"
+              aria-label="Dismiss"
+            >
+              ✕
+            </button>
+          </div>
+        )}
+
         <PendingTicketsTable orders={pendingOrders} onReview={handleReviewOrder} />
 
         <ApplicationsTable
@@ -199,7 +235,12 @@ export default function AdminApp() {
           onToggleShortlist={handleToggleShortlist}
           onDelete={handleDeleteApplication}
         />
-        <OrdersTable orders={orders} totalRevenue={totalRevenue} onDelete={handleDeleteOrder} />
+        <OrdersTable
+          orders={orders}
+          totalRevenue={totalRevenue}
+          onDelete={handleDeleteOrder}
+          onResendEmail={(id) => handleReviewOrder(id, "approved")}
+        />
       </div>
     </div>
   );
