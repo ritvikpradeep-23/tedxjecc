@@ -1,3 +1,35 @@
+const STATUS_STYLES = {
+  pending: "bg-white/10 text-white/70",
+  approved: "bg-tedx-red/15 text-tedx-red",
+  rejected: "bg-white/5 text-white/30",
+};
+
+function StatusBadge({ status, isTest }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide ${STATUS_STYLES[status] || STATUS_STYLES.pending}`}>
+        {status || "pending"}
+      </span>
+      {Boolean(isTest) && (
+        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide bg-white/10 text-white/50">
+          Test
+        </span>
+      )}
+    </div>
+  );
+}
+
+function CheckedInBadge({ checkedInAt }) {
+  if (!checkedInAt) {
+    return <span className="text-white/30 text-xs">Not yet</span>;
+  }
+  return (
+    <span className="text-tedx-red text-xs font-semibold">
+      Checked in — {new Date(checkedInAt).toLocaleString()}
+    </span>
+  );
+}
+
 export default function OrdersTable({ orders, totalRevenue, onDelete }) {
   const handleDelete = (o) => {
     if (window.confirm("Are you sure you want to delete this response? This cannot be undone.")) {
@@ -27,6 +59,8 @@ export default function OrdersTable({ orders, totalRevenue, onDelete }) {
               <th className="px-4 py-3 whitespace-nowrap">Email</th>
               <th className="px-4 py-3 whitespace-nowrap">Tier</th>
               <th className="px-4 py-3 whitespace-nowrap">Price</th>
+              <th className="px-4 py-3 whitespace-nowrap">Status</th>
+              <th className="px-4 py-3 whitespace-nowrap">Checked In</th>
               <th className="px-4 py-3 whitespace-nowrap">Submitted</th>
               <th className="px-4 py-3 whitespace-nowrap">Delete</th>
             </tr>
@@ -38,6 +72,12 @@ export default function OrdersTable({ orders, totalRevenue, onDelete }) {
                 <td className="px-4 py-3 whitespace-nowrap">{o.email}</td>
                 <td className="px-4 py-3 whitespace-nowrap">{o.tier}</td>
                 <td className="px-4 py-3 whitespace-nowrap">{o.price}</td>
+                <td className="px-4 py-3 whitespace-nowrap">
+                  <StatusBadge status={o.status} isTest={o.is_test} />
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap">
+                  <CheckedInBadge checkedInAt={o.checked_in_at} />
+                </td>
                 <td className="px-4 py-3 whitespace-nowrap">{new Date(o.created_at).toLocaleString()}</td>
                 <td className="px-4 py-3">
                   <button
@@ -53,7 +93,7 @@ export default function OrdersTable({ orders, totalRevenue, onDelete }) {
             ))}
             {orders.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-6 text-center text-white/40">
+                <td colSpan={8} className="px-4 py-6 text-center text-white/40">
                   No orders yet.
                 </td>
               </tr>

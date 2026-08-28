@@ -5,10 +5,14 @@ export const eventInfo = {
   name: "TEDxJEC",
   date: "Saturday, 10 October 2026",
   time: "10:00 AM – 1:20 PM",
-  venue: "College Auditorium",
+  venue: "Decinal Hall",
   tagline: "Ideas worth spreading, right here on campus",
   affiliation: "Organized in association with IEEE Student Chapter & Dept. of Computer Science",
   contactEmail: "team@tedxjec.org",
+  // Placeholder UPI ID for the ticket payment QR — swap for the real one
+  // whenever it's ready. Nothing else needs to change; the QR is generated
+  // live from this value plus each ticket's price.
+  upiId: "tedxjec@upi",
 };
 
 // Placeholder event theme — swap `name`/copy for the real one once decided.

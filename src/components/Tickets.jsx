@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import QRCode from "qrcode";
 import { eventInfo, ticketTiers } from "../data/siteData";
 import Button from "./Button";
 import Card from "./Card";
 import Section from "./Section";
 import SectionHeading from "./SectionHeading";
 import Reveal from "./Reveal";
+import { compressImage } from "../utils/compressImage";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -23,20 +25,42 @@ function CheckIcon() {
   );
 }
 
+function priceDigits(price) {
+  return (price.match(/\d+/g) || []).join("");
+}
+
+function PaymentQr({ tier }) {
+  const [qrSrc, setQrSrc] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const upiLink = `upi://pay?pa=${encodeURIComponent(eventInfo.upiId)}&pn=${encodeURIComponent(
+      eventInfo.name
+    )}&am=${encodeURIComponent(priceDigits(tier.price))}&cu=INR&tn=${encodeURIComponent(
+      `Ticket-${tier.name}`
+    )}`;
+    QRCode.toDataURL(upiLink, { margin: 1, width: 220, color: { dark: "#0d0d0d", light: "#ffffff" } })
+      .then((src) => !cancelled && setQrSrc(src))
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [tier]);
+
+  if (!qrSrc) {
+    return <div className="w-40 h-40 rounded-lg bg-white/10 animate-pulse" />;
+  }
+  return <img src={qrSrc} alt="UPI payment QR code" width={160} height={160} className="rounded-lg border-4 border-white" />;
+}
+
 function TicketCard({ tier, delay }) {
-  const [stage, setStage] = useState("idle"); // idle | form | submitting | done | error
+  const [stage, setStage] = useState("idle"); // idle | form | payment | pending | error
   const [buyer, setBuyer] = useState({ name: "", email: "" });
+  const [screenshot, setScreenshot] = useState(null); // { file, previewUrl }
   const [fieldError, setFieldError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const mailtoHref = (name) => {
-    const subject = encodeURIComponent(`TEDxJEC Ticket Request — ${tier.name}`);
-    const body = encodeURIComponent(
-      `Hi TEDxJEC team,\n\nI'd like to reserve a ${tier.name} ticket (${tier.price}).\n\nName: ${name}\nDepartment & Year:\nPhone:\n`
-    );
-    return `mailto:${eventInfo.contactEmail}?subject=${subject}&body=${body}`;
-  };
-
-  const handleConfirm = async (e) => {
+  const handleNameEmailNext = (e) => {
     e.preventDefault();
     if (!buyer.name.trim()) {
       setFieldError("Please enter your name.");
@@ -47,18 +71,46 @@ function TicketCard({ tier, delay }) {
       return;
     }
     setFieldError("");
-    setStage("submitting");
+    setStage("payment");
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setScreenshot({ file, previewUrl: URL.createObjectURL(file) });
+    setFieldError("");
+  };
+
+  const handleSubmitPayment = async (e) => {
+    e.preventDefault();
+    if (!screenshot) {
+      setFieldError("Please attach a screenshot of your payment.");
+      return;
+    }
+    setFieldError("");
+    setSubmitting(true);
     try {
+      const screenshotBase64 = await compressImage(screenshot.file);
       const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ buyerName: buyer.name, email: buyer.email, tier: tier.name, price: tier.price }),
+        body: JSON.stringify({
+          buyerName: buyer.name,
+          email: buyer.email,
+          tier: tier.name,
+          price: tier.price,
+          screenshotBase64,
+        }),
       });
-      if (!res.ok) throw new Error("Request failed");
-      window.location.href = mailtoHref(buyer.name);
-      setStage("done");
-    } catch {
-      setStage("error");
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Request failed");
+      }
+      setStage("pending");
+    } catch (err) {
+      setFieldError(err.message || "Something went wrong submitting your registration. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -82,9 +134,9 @@ function TicketCard({ tier, delay }) {
           ))}
         </ul>
 
-        {stage === "done" && (
-          <div className="mt-8 rounded-lg bg-tedx-red/10 border border-tedx-red/40 text-white text-sm text-center py-3 px-4">
-            Request started — check your email app to send it!
+        {stage === "pending" && (
+          <div className="mt-8 rounded-lg bg-tedx-red/10 border border-tedx-red/40 text-white text-sm text-center py-4 px-4">
+            Your ticket is pending verification — you'll receive your digital ticket by email once confirmed.
           </div>
         )}
 
@@ -95,12 +147,12 @@ function TicketCard({ tier, delay }) {
             className="mt-8 w-full"
             onClick={() => setStage("form")}
           >
-            Buy Ticket
+            Register
           </Button>
         )}
 
-        {(stage === "form" || stage === "submitting" || stage === "error") && (
-          <form onSubmit={handleConfirm} className="mt-8 flex flex-col gap-3">
+        {stage === "form" && (
+          <form onSubmit={handleNameEmailNext} className="mt-8 flex flex-col gap-3">
             <input
               value={buyer.name}
               onChange={(e) => setBuyer((b) => ({ ...b, name: e.target.value }))}
@@ -119,27 +171,64 @@ function TicketCard({ tier, delay }) {
                 {fieldError}
               </p>
             )}
-            {stage === "error" && (
+            <div className="flex gap-2">
+              <Button type="submit" variant={tier.recommended ? "primary" : "secondary"} className="flex-1">
+                Continue to Payment
+              </Button>
+              <Button type="button" variant="secondary" onClick={() => setStage("idle")} className="!px-5">
+                Cancel
+              </Button>
+            </div>
+          </form>
+        )}
+
+        {stage === "payment" && (
+          <form onSubmit={handleSubmitPayment} className="mt-8 flex flex-col gap-4">
+            <div className="flex flex-col items-center gap-3 rounded-lg bg-tedx-black border border-white/10 p-4 text-center">
+              <PaymentQr tier={tier} />
+              <p className="text-white/70 text-xs">
+                Scan to pay <span className="text-white font-bold">{tier.price}</span> via UPI
+              </p>
+              <p className="text-white/40 text-[11px] break-all">{eventInfo.upiId}</p>
+            </div>
+
+            <div>
+              <label className="text-xs font-semibold uppercase tracking-wide text-white/60 mb-2 block" htmlFor={`screenshot-${tier.id}`}>
+                Upload payment screenshot
+              </label>
+              <input
+                id={`screenshot-${tier.id}`}
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="w-full text-xs text-white/70 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-tedx-red file:text-white file:text-xs file:font-semibold file:uppercase file:cursor-pointer cursor-pointer"
+              />
+              {screenshot && (
+                <img
+                  src={screenshot.previewUrl}
+                  alt="Payment screenshot preview"
+                  className="mt-3 max-h-32 rounded-lg border border-white/15 mx-auto"
+                />
+              )}
+            </div>
+
+            {fieldError && (
               <p className="text-red-400 text-xs" role="alert">
-                Something went wrong saving your order. Please try again.
+                {fieldError}
               </p>
             )}
+
             <div className="flex gap-2">
               <Button
                 type="submit"
                 variant={tier.recommended ? "primary" : "secondary"}
-                disabled={stage === "submitting"}
+                disabled={submitting}
                 className="flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {stage === "submitting" ? "Confirming…" : "Confirm"}
+                {submitting ? "Submitting…" : "Submit for Verification"}
               </Button>
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={() => setStage("idle")}
-                className="!px-5"
-              >
-                Cancel
+              <Button type="button" variant="secondary" onClick={() => setStage("form")} className="!px-5">
+                Back
               </Button>
             </div>
           </form>
