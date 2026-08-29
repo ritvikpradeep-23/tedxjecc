@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
+import PhoneReveal from "./PhoneReveal";
 
 const ICON_PATHS = {
   linkedin:
@@ -86,6 +87,10 @@ export default function ProfileModal({ isOpen, data, onClose }) {
             </span>
           )}
 
+          {data.quote && (
+            <p className="text-white/80 text-base sm:text-lg italic mt-4 max-w-md">"{data.quote}"</p>
+          )}
+
           {data.bio && (
             <p className="text-white/65 text-sm sm:text-base mt-5 leading-relaxed max-w-md">{data.bio}</p>
           )}
@@ -111,6 +116,12 @@ export default function ProfileModal({ isOpen, data, onClose }) {
               <ContactIcon href={`mailto:${data.email}`} label={`Email ${data.name}`} icon="email" />
             )}
           </div>
+
+          {data.phoneSlug && (
+            <div className="mt-4">
+              <PhoneReveal slug={data.phoneSlug} />
+            </div>
+          )}
         </div>
       </div>
     </div>,
