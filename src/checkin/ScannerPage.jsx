@@ -4,7 +4,6 @@ import AdminLogin from "../admin/AdminLogin";
 
 const READER_ID = "tedx-qr-reader";
 const RESET_DELAY_MS = 2500;
-const POLL_INTERVAL_MS = 10000;
 
 const RESULT_STYLES = {
   success: "bg-green-600",
@@ -51,7 +50,9 @@ function ResultOverlay({ result }) {
   );
 }
 
-function ScanMode({ onExit, onScanned }) {
+// Camera starts scanning immediately on mount — this page does exactly one
+// thing (no list, no navigation), so there's no "start scanning" step.
+function Scanner() {
   const [result, setResult] = useState(null);
   const [cameraError, setCameraError] = useState("");
   const scannerRef = useRef(null);
@@ -100,7 +101,6 @@ function ScanMode({ onExit, onScanned }) {
       } else {
         setResult({ type: "invalid" });
       }
-      onScanned(); // refresh the attendee list in the background
     } catch {
       setResult({ type: "invalid" });
     } finally {
@@ -113,17 +113,6 @@ function ScanMode({ onExit, onScanned }) {
 
   return (
     <div className="fixed inset-0 bg-black flex flex-col items-center justify-center">
-      <button
-        type="button"
-        onClick={onExit}
-        aria-label="Back to attendee list"
-        className="absolute top-5 left-5 z-20 w-10 h-10 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white cursor-pointer"
-      >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
-
       <div className="w-full max-w-md px-4 py-6 text-center">
         <h1 className="text-white text-lg font-bold mb-1">TEDx JEC Ticket Scanner</h1>
         <p className="text-white/50 text-xs mb-4">Point the camera at a ticket's QR code</p>
@@ -141,146 +130,27 @@ function ScanMode({ onExit, onScanned }) {
   );
 }
 
-function AttendeeRow({ order }) {
-  const checkedIn = Boolean(order.checked_in_at);
-  return (
-    <div className="flex items-center justify-between bg-tedx-charcoal border border-white/10 rounded-xl px-4 py-3">
-      <div className="min-w-0">
-        <p className="text-white text-sm font-semibold truncate">{order.buyer_name}</p>
-        <p className="text-white/50 text-xs mt-0.5">
-          {order.tier}
-          {Boolean(order.is_test) && <span className="text-white/30"> · TEST</span>}
-        </p>
-      </div>
-      {checkedIn ? (
-        <span className="shrink-0 ml-3 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-tedx-red/15 text-tedx-red">
-          Checked In
-        </span>
-      ) : (
-        <span className="shrink-0 ml-3 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-white/10 text-white/40">
-          Not Yet
-        </span>
-      )}
-    </div>
-  );
-}
-
-function ListMode({ orders, onStartScan }) {
-  const approved = orders.filter((o) => o.status === "approved");
-  const checkedInCount = approved.filter((o) => o.checked_in_at).length;
-
-  return (
-    <div className="min-h-screen bg-black flex flex-col">
-      <div className="px-5 pt-8 pb-1 text-center shrink-0">
-        <h1 className="text-white text-xl font-bold">TEDx JEC Ticket Scanner</h1>
-        <p className="text-white/50 text-sm mt-1">
-          {checkedInCount} / {approved.length} checked in
-        </p>
-      </div>
-
-      <div className="px-5 pt-5 pb-4 shrink-0">
-        <button
-          type="button"
-          onClick={onStartScan}
-          className="w-full bg-tedx-red text-white text-base font-bold uppercase tracking-wide rounded-2xl py-5 flex items-center justify-center gap-3 cursor-pointer active:scale-[0.98] transition-transform shadow-[0_0_30px_rgba(230,43,30,0.35)]"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M4 7V5a1 1 0 0 1 1-1h2M20 7V5a1 1 0 0 0-1-1h-2M4 17v2a1 1 0 0 0 1 1h2M20 17v2a1 1 0 0 1-1 1h-2M4 12h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          Start Scanning
-        </button>
-      </div>
-
-      <div className="flex-1 overflow-y-auto px-5 pb-8">
-        <div className="flex flex-col gap-2">
-          {approved.map((o) => (
-            <AttendeeRow key={o.id} order={o} />
-          ))}
-          {approved.length === 0 && (
-            <p className="text-white/40 text-sm text-center mt-10">No approved tickets yet.</p>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default function TicketScannerApp() {
-  const [authStatus, setAuthStatus] = useState("checking"); // checking | loggedOut | loggedIn
-  const [mode, setMode] = useState("list"); // list | scan
-  const [orders, setOrders] = useState([]);
-  const authStatusRef = useRef("checking");
-  authStatusRef.current = authStatus;
+export default function ScannerPage() {
+  const [status, setStatus] = useState("checking"); // checking | loggedOut | loggedIn
 
   useEffect(() => {
     document.title = "TEDx JEC Ticket Scanner";
   }, []);
 
-  const loadOrders = async () => {
-    try {
-      const res = await fetch("/api/orders", { credentials: "include" });
-      if (res.status === 401) {
-        setAuthStatus("loggedOut");
-        return;
-      }
-      const data = await res.json();
-      setOrders(data.orders || []);
-    } catch {
-      // Transient network hiccup — next poll/scan retry will refresh it.
-    }
-  };
-
   useEffect(() => {
     fetch("/api/admin/check", { credentials: "include" })
       .then((r) => r.json())
-      .then((data) => {
-        if (data.authenticated) {
-          setAuthStatus("loggedIn");
-          loadOrders();
-        } else {
-          setAuthStatus("loggedOut");
-        }
-      })
-      .catch(() => setAuthStatus("loggedOut"));
+      .then((data) => setStatus(data.authenticated ? "loggedIn" : "loggedOut"))
+      .catch(() => setStatus("loggedOut"));
   }, []);
 
-  // Keeps the list fresh if other volunteers are scanning on other phones,
-  // not just after this device's own scans.
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (authStatusRef.current === "loggedIn" && document.visibilityState === "visible") {
-        loadOrders();
-      }
-    }, POLL_INTERVAL_MS);
-    return () => clearInterval(interval);
-  }, []);
-
-  if (authStatus === "checking") {
+  if (status === "checking") {
     return <div className="min-h-screen bg-black text-white/60 flex items-center justify-center">Loading…</div>;
   }
 
-  if (authStatus === "loggedOut") {
-    return (
-      <AdminLogin
-        onSuccess={() => {
-          setAuthStatus("loggedIn");
-          loadOrders();
-        }}
-      />
-    );
+  if (status === "loggedOut") {
+    return <AdminLogin onSuccess={() => setStatus("loggedIn")} />;
   }
 
-  if (mode === "scan") {
-    return (
-      <ScanMode
-        onExit={() => {
-          setMode("list");
-          loadOrders();
-        }}
-        onScanned={loadOrders}
-      />
-    );
-  }
-
-  return <ListMode orders={orders} onStartScan={() => setMode("scan")} />;
+  return <Scanner />;
 }
