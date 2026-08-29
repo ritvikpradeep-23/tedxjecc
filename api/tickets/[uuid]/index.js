@@ -1,5 +1,5 @@
-import { getDb } from "../../lib/db.js";
-import { formatPublicTicket } from "../../lib/ticketData.js";
+import { getDb } from "../../../lib/db.js";
+import { formatPublicTicket } from "../../../lib/ticketData.js";
 
 // Public, no auth — this is the link people open from their ticket email.
 // Never returns email, payment_screenshot_url, the internal numeric id, or

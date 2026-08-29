@@ -2,6 +2,7 @@
   "rewrites": [
     { "source": "/admin", "destination": "/index.html" },
     { "source": "/admin/(.*)", "destination": "/index.html" },
-    { "source": "/ticket/(.*)", "destination": "/index.html" }
+    { "source": "/ticket/(.*)", "destination": "/index.html" },
+    { "source": "/ticket-scanner", "destination": "/index.html" }
   ]
 }

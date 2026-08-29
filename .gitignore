@@ -28,3 +28,4 @@ dist-ssr
 # Local SQLite fallback DB (dev only — production uses Turso)
 *.db
 *.db-journal
+TEDxJECC-Content-Guide.pdf
