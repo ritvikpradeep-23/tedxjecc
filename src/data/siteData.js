@@ -32,7 +32,7 @@ export const eventTheme = {
 // (VITE_APPLY_FORM_URL) or directly here — and every apply link across the
 // site re-enables and points at it, opened in a new tab. No per-component
 // wiring needed.
-export const APPLY_FORM_URL = import.meta.env.VITE_APPLY_FORM_URL || "https://forms.gle/g8SDHvqjPW1F9Y1dA";
+export const APPLY_FORM_URL = import.meta.env?.VITE_APPLY_FORM_URL || "https://forms.gle/g8SDHvqjPW1F9Y1dA";
 
 export const navLinks = [
   { label: "Speakers", href: "#speakers" },
