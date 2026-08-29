@@ -5,7 +5,7 @@ import PendingTicketsTable from "./PendingTicketsTable";
 import OrdersTable from "./OrdersTable";
 import { ticketTiers } from "../data/siteData";
 
-const POLL_INTERVAL_MS = 12000;
+const POLL_INTERVAL_MS = 1000;
 
 export default function AdminApp() {
   const [status, setStatus] = useState("checking"); // checking | loggedOut | loggedIn
@@ -171,15 +171,29 @@ export default function AdminApp() {
   return (
     <div className="min-h-screen bg-tedx-black px-6 py-10">
       <div className="max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-10">
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-10">
           <h1 className="text-white text-2xl font-bold">TEDxJEC Admin</h1>
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="text-white/70 text-sm border border-white/20 rounded-lg px-4 py-2 hover:text-tedx-red hover:border-tedx-red/60 transition-colors cursor-pointer"
-          >
-            Log out
-          </button>
+          <div className="flex items-center gap-3">
+            <a
+              href="/check-in-dashboard"
+              className="text-white/70 text-sm border border-white/20 rounded-lg px-4 py-2 hover:text-tedx-red hover:border-tedx-red/60 transition-colors"
+            >
+              Check-In Dashboard
+            </a>
+            <a
+              href="/ticket-scanner"
+              className="text-white/70 text-sm border border-white/20 rounded-lg px-4 py-2 hover:text-tedx-red hover:border-tedx-red/60 transition-colors"
+            >
+              Scanner
+            </a>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="text-white/70 text-sm border border-white/20 rounded-lg px-4 py-2 hover:text-tedx-red hover:border-tedx-red/60 transition-colors cursor-pointer"
+            >
+              Log out
+            </button>
+          </div>
         </div>
 
         <section className="mb-16 bg-tedx-charcoal border border-white/10 rounded-lg p-5">

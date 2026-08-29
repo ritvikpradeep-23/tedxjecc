@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import AdminLogin from "../admin/AdminLogin";
 
-const POLL_INTERVAL_MS = 5000;
+const POLL_INTERVAL_MS = 1000;
 
 function Th({ label, sortKey, active, dir, onClick }) {
   const isActive = active === sortKey;
