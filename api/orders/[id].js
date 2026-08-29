@@ -19,7 +19,23 @@ export default async function handler(req, res) {
     }
 
     if (req.method === "PATCH") {
-      const { status } = req.body || {};
+      const { status, checkedIn } = req.body || {};
+
+      // Manual override for the check-in dashboard — lets an admin correct a
+      // missed/mistaken scan by hand. Uses the same datetime('now') format
+      // the scanner's own checkin.js writes, so sorting/display never sees
+      // two different timestamp shapes.
+      if (checkedIn !== undefined) {
+        await db.execute({
+          sql: checkedIn
+            ? "UPDATE ticket_orders SET checked_in_at = datetime('now') WHERE id = ?"
+            : "UPDATE ticket_orders SET checked_in_at = NULL WHERE id = ?",
+          args: [id],
+        });
+        res.status(200).json({ ok: true });
+        return;
+      }
+
       if (status !== "approved" && status !== "rejected") {
         res.status(400).json({ error: "status must be 'approved' or 'rejected'." });
         return;

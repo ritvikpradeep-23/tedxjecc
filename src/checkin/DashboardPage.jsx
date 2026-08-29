@@ -15,9 +15,10 @@ function Th({ label, sortKey, active, dir, onClick }) {
 function Dashboard({ onSessionExpired }) {
   const [orders, setOrders] = useState([]);
   const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("all"); // all | not_checked_in
+  const [filter, setFilter] = useState("all"); // all | checked_in | not_checked_in
   const [sortKey, setSortKey] = useState("buyer_name");
   const [sortDir, setSortDir] = useState("asc");
+  const [togglingId, setTogglingId] = useState(null);
 
   const loadOrders = async () => {
     try {
@@ -46,7 +47,9 @@ function Dashboard({ onSessionExpired }) {
 
   const rows = useMemo(() => {
     let filtered = attendees;
-    if (filter === "not_checked_in") {
+    if (filter === "checked_in") {
+      filtered = filtered.filter((o) => o.checked_in_at);
+    } else if (filter === "not_checked_in") {
       filtered = filtered.filter((o) => !o.checked_in_at);
     }
     if (search.trim()) {
@@ -61,6 +64,25 @@ function Dashboard({ onSessionExpired }) {
       return 0;
     });
   }, [attendees, filter, search, sortKey, sortDir]);
+
+  const handleToggleCheckedIn = async (order) => {
+    setTogglingId(order.id);
+    try {
+      const res = await fetch(`/api/orders/${order.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ checkedIn: !order.checked_in_at }),
+      });
+      if (res.status === 401) {
+        onSessionExpired();
+        return;
+      }
+      await loadOrders();
+    } finally {
+      setTogglingId(null);
+    }
+  };
 
   const toggleSort = (key) => {
     if (sortKey === key) {
@@ -107,6 +129,15 @@ function Dashboard({ onSessionExpired }) {
             </button>
             <button
               type="button"
+              onClick={() => setFilter("checked_in")}
+              className={`px-4 py-2.5 text-xs font-semibold uppercase tracking-wide cursor-pointer ${
+                filter === "checked_in" ? "bg-tedx-red text-white" : "bg-tedx-charcoal text-white/60 hover:text-white"
+              }`}
+            >
+              Checked In
+            </button>
+            <button
+              type="button"
               onClick={() => setFilter("not_checked_in")}
               className={`px-4 py-2.5 text-xs font-semibold uppercase tracking-wide cursor-pointer ${
                 filter === "not_checked_in" ? "bg-tedx-red text-white" : "bg-tedx-charcoal text-white/60 hover:text-white"
@@ -125,6 +156,7 @@ function Dashboard({ onSessionExpired }) {
                 <Th label="Tier" sortKey="tier" active={sortKey} dir={sortDir} onClick={toggleSort} />
                 <Th label="Checked In" sortKey="checked_in_at" active={sortKey} dir={sortDir} onClick={toggleSort} />
                 <th className="px-4 py-3 whitespace-nowrap">Check-In Time</th>
+                <th className="px-4 py-3 whitespace-nowrap">Manual Override</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/10">
@@ -149,11 +181,21 @@ function Dashboard({ onSessionExpired }) {
                   <td className="px-4 py-3 whitespace-nowrap text-white/60">
                     {o.checked_in_at ? new Date(o.checked_in_at).toLocaleString() : "—"}
                   </td>
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    <button
+                      type="button"
+                      onClick={() => handleToggleCheckedIn(o)}
+                      disabled={togglingId === o.id}
+                      className="text-xs font-semibold uppercase tracking-wide rounded-lg border border-white/20 px-3 py-1.5 text-white/70 hover:text-white hover:border-white/50 disabled:opacity-40 cursor-pointer"
+                    >
+                      {togglingId === o.id ? "…" : o.checked_in_at ? "Undo Check-In" : "Mark Checked In"}
+                    </button>
+                  </td>
                 </tr>
               ))}
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-4 py-8 text-center text-white/40">
+                  <td colSpan={5} className="px-4 py-8 text-center text-white/40">
                     No attendees match.
                   </td>
                 </tr>
