@@ -12,8 +12,10 @@ export default function AdminApp() {
   const [applications, setApplications] = useState([]);
   const [orders, setOrders] = useState([]);
   const [testTier, setTestTier] = useState(ticketTiers[0]?.id || "");
+  const [testName, setTestName] = useState("");
   const [testTicketUrl, setTestTicketUrl] = useState(null);
   const [generatingTest, setGeneratingTest] = useState(false);
+  const [testTicketLog, setTestTicketLog] = useState([]);
   const [reviewNotice, setReviewNotice] = useState(null); // { type: 'error'|'success', text }
   const statusRef = useRef(status);
   statusRef.current = status;
@@ -127,11 +129,16 @@ export default function AdminApp() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ tier: tier.name, price: tier.price }),
+        body: JSON.stringify({ tier: tier.name, price: tier.price, buyerName: testName }),
       });
       const data = await res.json();
       if (res.ok) {
         setTestTicketUrl(data.ticketUrl);
+        setTestTicketLog((log) => [
+          { name: testName.trim() || "Test Attendee", tier: tier.name, url: data.ticketUrl },
+          ...log,
+        ]);
+        setTestName("");
         loadData();
       }
     } finally {
@@ -178,6 +185,13 @@ export default function AdminApp() {
         <section className="mb-16 bg-tedx-charcoal border border-white/10 rounded-lg p-5">
           <h2 className="text-white text-sm font-bold uppercase tracking-wide mb-3">Test the check-in scanner</h2>
           <div className="flex flex-wrap items-center gap-3">
+            <input
+              type="text"
+              value={testName}
+              onChange={(e) => setTestName(e.target.value)}
+              placeholder="Name (optional)"
+              className="bg-tedx-black border border-white/15 text-white placeholder-white/30 text-sm rounded-lg px-3 py-2"
+            />
             <select
               value={testTier}
               onChange={(e) => setTestTier(e.target.value)}
@@ -202,10 +216,29 @@ export default function AdminApp() {
                 rel="noopener noreferrer"
                 className="text-tedx-red text-sm underline break-all"
               >
-                Open test ticket → {window.location.origin}{testTicketUrl}
+                Open latest test ticket →
               </a>
             )}
           </div>
+
+          {testTicketLog.length > 0 && (
+            <ul className="mt-4 flex flex-col gap-1.5 border-t border-white/10 pt-4">
+              {testTicketLog.map((t, i) => (
+                <li key={i} className="text-sm text-white/70 flex items-center gap-2 flex-wrap">
+                  <span className="text-white font-semibold">{t.name}</span>
+                  <span className="text-white/40">· {t.tier}</span>
+                  <a
+                    href={t.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-tedx-red underline break-all"
+                  >
+                    {window.location.origin}{t.url}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
 
         {reviewNotice && (

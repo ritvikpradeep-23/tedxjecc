@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    const { tier, price } = req.body || {};
+    const { tier, price, buyerName } = req.body || {};
     if (!tier || !price) {
       res.status(400).json({ error: "tier and price are required." });
       return;
@@ -25,13 +25,14 @@ export default async function handler(req, res) {
 
     const uuid = crypto.randomUUID();
     const stamp = Date.now().toString().slice(-5);
+    const name = buyerName?.trim() || `Test Attendee ${stamp}`;
 
     const db = await getDb();
     await db.execute({
       sql: `INSERT INTO ticket_orders
         (buyer_name, email, tier, price, uuid, status, is_test)
         VALUES (?, ?, ?, ?, ?, 'approved', 1)`,
-      args: [`Test Attendee ${stamp}`, `test-${stamp}@example.com`, tier, price, uuid],
+      args: [name, `test-${stamp}@example.com`, tier, price, uuid],
     });
 
     res.status(201).json({ ok: true, uuid, ticketUrl: `/ticket/${uuid}` });
