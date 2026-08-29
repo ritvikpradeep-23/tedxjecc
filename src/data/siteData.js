@@ -366,19 +366,11 @@ const rawTier3Teams = [
 export const tier2Teams = rawTier2Teams.map(buildTeam);
 export const tier3Teams = rawTier3Teams.map(buildTeam);
 
-export const teamOptions = [...tier2Teams, ...tier3Teams].map((t) => t.name);
-
 // Display labels for each tier in the Meet the Team section.
 export const tierLabels = {
   tier1: "Leadership",
   tier2: "Core Teams",
   tier3: "Outreach and Production",
-};
-
-export const joinFormFields = {
-  departmentPlaceholder: "e.g. Computer Science, 3rd Year",
-  whyPlaceholder: "Tell us why this team excites you and what you'd bring to it...",
-  portfolioPlaceholder: "Link to your work, resume, or social profile (optional)",
 };
 
 // "Meet the Team" (real, confirmed people only — every entry still named
