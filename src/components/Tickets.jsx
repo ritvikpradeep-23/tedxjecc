@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import QRCode from "qrcode";
 import { eventInfo, ticketTiers } from "../data/siteData";
 import Button from "./Button";
-import Card from "./Card";
 import Section from "./Section";
 import SectionHeading from "./SectionHeading";
 import Reveal from "./Reveal";
@@ -10,18 +9,50 @@ import { compressImage } from "../utils/compressImage";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Union of every tier's perks, in first-seen order — stays in sync
+// automatically if perks ever change, no hardcoded feature list to drift.
+const FEATURES = ticketTiers.reduce((list, tier) => {
+  tier.perks.forEach((perk) => {
+    if (!list.includes(perk)) list.push(perk);
+  });
+  return list;
+}, []);
+
 function CheckIcon() {
   return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      className="text-tedx-red shrink-0 mt-0.5"
-      aria-hidden="true"
-    >
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-tedx-red" aria-hidden="true">
       <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
+  );
+}
+
+function ComparisonTable() {
+  return (
+    <div className="grid grid-cols-[1fr_auto_auto] gap-x-4 sm:gap-x-8 mb-10">
+      <div />
+      {ticketTiers.map((tier) => (
+        <div key={tier.id} className="text-center min-w-[76px]">
+          <p className="font-display font-bold text-white text-sm sm:text-base">{tier.name}</p>
+          <p className="text-tedx-red font-black text-lg sm:text-2xl mt-0.5">{tier.price}</p>
+        </div>
+      ))}
+      {FEATURES.map((feature) => (
+        <FeatureRow key={feature} feature={feature} />
+      ))}
+    </div>
+  );
+}
+
+function FeatureRow({ feature }) {
+  return (
+    <>
+      <p className="text-white/70 text-sm py-3 border-t border-white/10">{feature}</p>
+      {ticketTiers.map((tier) => (
+        <div key={tier.id} className="flex justify-center items-center py-3 border-t border-white/10">
+          {tier.perks.includes(feature) ? <CheckIcon /> : <span className="text-white/25">—</span>}
+        </div>
+      ))}
+    </>
   );
 }
 
@@ -53,8 +84,11 @@ function PaymentQr({ tier }) {
   return <img src={qrSrc} alt="UPI payment QR code" width={160} height={160} className="rounded-lg border-4 border-white" />;
 }
 
-function TicketCard({ tier, delay }) {
-  const [stage, setStage] = useState("idle"); // idle | form | payment | pending | error
+// The registration flow itself — name/email, then UPI QR + screenshot
+// upload, then a pending-verification message. Logic is unchanged from
+// before this restyle: same fields, same /api/orders call, same validation.
+function TicketFlow({ tier, onCancel }) {
+  const [stage, setStage] = useState("form"); // form | payment | pending
   const [buyer, setBuyer] = useState({ name: "", email: "" });
   const [screenshot, setScreenshot] = useState(null); // { file, previewUrl }
   const [fieldError, setFieldError] = useState("");
@@ -115,130 +149,103 @@ function TicketCard({ tier, delay }) {
   };
 
   return (
-    <Reveal delay={delay}>
-      <Card accent={tier.recommended} className="relative p-8 flex flex-col h-full">
-        {tier.recommended && (
-          <span className="absolute -top-3.5 left-8 bg-tedx-red text-white text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full shadow-[0_0_20px_rgba(230,43,30,0.5)]">
-            Recommended
-          </span>
-        )}
-        <h3 className="heading-lg text-white">{tier.name}</h3>
-        <p className="mt-3 text-4xl font-black text-tedx-red">{tier.price}</p>
+    <div className="flex flex-col gap-4">
+      {stage === "pending" && (
+        <div className="rounded-lg bg-tedx-red/10 border border-tedx-red/40 text-white text-sm text-center py-4 px-4">
+          Your ticket is pending verification — you'll receive your digital ticket by email once confirmed.
+        </div>
+      )}
 
-        <ul className="mt-6 flex flex-col gap-3 flex-1">
-          {tier.perks.map((perk) => (
-            <li key={perk} className="flex items-start gap-2.5 text-white/75 text-sm">
-              <CheckIcon />
-              {perk}
-            </li>
-          ))}
-        </ul>
-
-        {stage === "pending" && (
-          <div className="mt-8 rounded-lg bg-tedx-red/10 border border-tedx-red/40 text-white text-sm text-center py-4 px-4">
-            Your ticket is pending verification — you'll receive your digital ticket by email once confirmed.
+      {stage === "form" && (
+        <form onSubmit={handleNameEmailNext} className="flex flex-col gap-3">
+          <input
+            value={buyer.name}
+            onChange={(e) => setBuyer((b) => ({ ...b, name: e.target.value }))}
+            placeholder="Your full name"
+            className="w-full rounded-lg bg-tedx-black border border-white/15 text-white placeholder-white/30 px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:border-tedx-red focus:ring-tedx-red"
+          />
+          <input
+            type="email"
+            value={buyer.email}
+            onChange={(e) => setBuyer((b) => ({ ...b, email: e.target.value }))}
+            placeholder="you@example.com"
+            className="w-full rounded-lg bg-tedx-black border border-white/15 text-white placeholder-white/30 px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:border-tedx-red focus:ring-tedx-red"
+          />
+          {fieldError && (
+            <p className="text-red-400 text-xs" role="alert">
+              {fieldError}
+            </p>
+          )}
+          <div className="flex gap-2">
+            <Button type="submit" variant={tier.recommended ? "primary" : "secondary"} className="flex-1">
+              Continue to Payment
+            </Button>
+            <Button type="button" variant="secondary" onClick={onCancel} className="!px-5">
+              Cancel
+            </Button>
           </div>
-        )}
+        </form>
+      )}
 
-        {stage === "idle" && (
-          <Button
-            type="button"
-            variant={tier.recommended ? "primary" : "secondary"}
-            className="mt-8 w-full"
-            onClick={() => setStage("form")}
-          >
-            Register
-          </Button>
-        )}
+      {stage === "payment" && (
+        <form onSubmit={handleSubmitPayment} className="flex flex-col gap-4">
+          <div className="flex flex-col items-center gap-3 rounded-lg bg-tedx-black border border-white/10 p-4 text-center">
+            <PaymentQr tier={tier} />
+            <p className="text-white/70 text-xs">
+              Scan to pay <span className="text-white font-bold">{tier.price}</span> via UPI
+            </p>
+            <p className="text-white/40 text-[11px] break-all">{eventInfo.upiId}</p>
+          </div>
 
-        {stage === "form" && (
-          <form onSubmit={handleNameEmailNext} className="mt-8 flex flex-col gap-3">
+          <div>
+            <label className="text-xs font-semibold uppercase tracking-wide text-white/60 mb-2 block" htmlFor={`screenshot-${tier.id}`}>
+              Upload payment screenshot
+            </label>
             <input
-              value={buyer.name}
-              onChange={(e) => setBuyer((b) => ({ ...b, name: e.target.value }))}
-              placeholder="Your full name"
-              className="w-full rounded-lg bg-tedx-black border border-white/15 text-white placeholder-white/30 px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:border-tedx-red focus:ring-tedx-red"
+              id={`screenshot-${tier.id}`}
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="w-full text-xs text-white/70 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-tedx-red file:text-white file:text-xs file:font-semibold file:uppercase file:cursor-pointer cursor-pointer"
             />
-            <input
-              type="email"
-              value={buyer.email}
-              onChange={(e) => setBuyer((b) => ({ ...b, email: e.target.value }))}
-              placeholder="you@example.com"
-              className="w-full rounded-lg bg-tedx-black border border-white/15 text-white placeholder-white/30 px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:border-tedx-red focus:ring-tedx-red"
-            />
-            {fieldError && (
-              <p className="text-red-400 text-xs" role="alert">
-                {fieldError}
-              </p>
-            )}
-            <div className="flex gap-2">
-              <Button type="submit" variant={tier.recommended ? "primary" : "secondary"} className="flex-1">
-                Continue to Payment
-              </Button>
-              <Button type="button" variant="secondary" onClick={() => setStage("idle")} className="!px-5">
-                Cancel
-              </Button>
-            </div>
-          </form>
-        )}
-
-        {stage === "payment" && (
-          <form onSubmit={handleSubmitPayment} className="mt-8 flex flex-col gap-4">
-            <div className="flex flex-col items-center gap-3 rounded-lg bg-tedx-black border border-white/10 p-4 text-center">
-              <PaymentQr tier={tier} />
-              <p className="text-white/70 text-xs">
-                Scan to pay <span className="text-white font-bold">{tier.price}</span> via UPI
-              </p>
-              <p className="text-white/40 text-[11px] break-all">{eventInfo.upiId}</p>
-            </div>
-
-            <div>
-              <label className="text-xs font-semibold uppercase tracking-wide text-white/60 mb-2 block" htmlFor={`screenshot-${tier.id}`}>
-                Upload payment screenshot
-              </label>
-              <input
-                id={`screenshot-${tier.id}`}
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="w-full text-xs text-white/70 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-tedx-red file:text-white file:text-xs file:font-semibold file:uppercase file:cursor-pointer cursor-pointer"
+            {screenshot && (
+              <img
+                src={screenshot.previewUrl}
+                alt="Payment screenshot preview"
+                className="mt-3 max-h-32 rounded-lg border border-white/15 mx-auto"
               />
-              {screenshot && (
-                <img
-                  src={screenshot.previewUrl}
-                  alt="Payment screenshot preview"
-                  className="mt-3 max-h-32 rounded-lg border border-white/15 mx-auto"
-                />
-              )}
-            </div>
-
-            {fieldError && (
-              <p className="text-red-400 text-xs" role="alert">
-                {fieldError}
-              </p>
             )}
+          </div>
 
-            <div className="flex gap-2">
-              <Button
-                type="submit"
-                variant={tier.recommended ? "primary" : "secondary"}
-                disabled={submitting}
-                className="flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {submitting ? "Submitting…" : "Submit for Verification"}
-              </Button>
-              <Button type="button" variant="secondary" onClick={() => setStage("form")} className="!px-5">
-                Back
-              </Button>
-            </div>
-          </form>
-        )}
-      </Card>
-    </Reveal>
+          {fieldError && (
+            <p className="text-red-400 text-xs" role="alert">
+              {fieldError}
+            </p>
+          )}
+
+          <div className="flex gap-2">
+            <Button
+              type="submit"
+              variant={tier.recommended ? "primary" : "secondary"}
+              disabled={submitting}
+              className="flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {submitting ? "Submitting…" : "Submit for Verification"}
+            </Button>
+            <Button type="button" variant="secondary" onClick={() => setStage("form")} className="!px-5">
+              Back
+            </Button>
+          </div>
+        </form>
+      )}
+    </div>
   );
 }
 
 export default function Tickets() {
+  const [activeTierId, setActiveTierId] = useState(null);
+  const activeTier = ticketTiers.find((t) => t.id === activeTierId) || null;
+
   return (
     <Section id="tickets" tone="charcoal" container="narrow">
       <SectionHeading
@@ -247,11 +254,26 @@ export default function Tickets() {
         subtitle="Simple pricing. One unforgettable day of ideas."
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-        {ticketTiers.map((tier, i) => (
-          <TicketCard key={tier.id} tier={tier} delay={i * 120} />
+      <ComparisonTable />
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md mx-auto">
+        {ticketTiers.map((tier) => (
+          <Button
+            key={tier.id}
+            type="button"
+            variant={tier.recommended ? "primary" : "secondary"}
+            onClick={() => setActiveTierId(tier.id)}
+          >
+            Register — {tier.name}
+          </Button>
         ))}
       </div>
+
+      {activeTier && (
+        <Reveal className="mt-10 max-w-md mx-auto">
+          <TicketFlow key={activeTier.id} tier={activeTier} onCancel={() => setActiveTierId(null)} />
+        </Reveal>
+      )}
 
       <Reveal className="text-center mt-10">
         <p className="text-white/55 text-sm">Only 100–120 seats available</p>

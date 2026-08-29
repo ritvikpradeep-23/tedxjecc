@@ -21,7 +21,7 @@ export const eventTheme = {
   name: "Beyond Boundaries",
   oneLiner: "Exploring the ideas that push past what we think is possible.",
   description:
-    "Beyond Boundaries is a call to question the limits we take for granted — in technology, in society, and in ourselves. This year's speakers explore what happens when curiosity refuses to stop at the edge of the known.",
+    "Beyond Boundaries is about the limits we stop noticing after a while — in technology, in society, in ourselves. This year's speakers don't treat those limits as fixed; some will challenge them outright, others will simply follow a question further than most people bother to. Either way, the theme is less a topic than an attitude — curiosity that doesn't stop at the edge of the known.",
   disciplines: ["Technology", "Social Impact", "Science", "Art", "Personal Growth"],
 };
 
@@ -62,9 +62,10 @@ function withContact(person) {
 
 // Shared placeholder for Meet the Team members who haven't been confirmed
 // yet. To fill someone in once you have their real info, replace `name`,
-// `photo`, and the bio/contact fields directly on their entry below — see
-// README.md for the full walkthrough.
-const ANON_PHOTO = "/images/avatar-placeholder.svg";
+// `photo` (a real image URL), and the bio/contact fields directly on their
+// entry below — see README.md for the full walkthrough. An empty `photo`
+// renders no avatar at all (the Team section's "Open" state); once `photo`
+// is set, that row automatically switches to its "Confirmed" state.
 const ANON_BIO = "To be announced";
 const anonContact = { linkedin: "", whatsapp: "", email: "" };
 
@@ -192,11 +193,12 @@ export const ticketTiers = [
 // confirmed, replace their `name`, `photo`, `description`, `longBio`, and
 // contact fields directly.
 const rawLeadership = {
-  description: "Overall event leadership, final decisions, and the required TEDx/institutional liaison.",
+  description:
+    "This tier holds overall responsibility for the event. They make the final calls and serve as the required liaison between TEDxJEC and the institution, as well as the TEDx program itself.",
   members: [
     {
       name: "TBD",
-      photo: ANON_PHOTO,
+      photo: "",
       role: "Co-Organizer",
       description: ANON_BIO,
       longBio: ANON_BIO,
@@ -204,7 +206,7 @@ const rawLeadership = {
     },
     {
       name: "TBD",
-      photo: ANON_PHOTO,
+      photo: "",
       role: "Co-Organizer",
       description: ANON_BIO,
       longBio: ANON_BIO,
@@ -212,7 +214,7 @@ const rawLeadership = {
     },
     {
       name: "TBD",
-      photo: ANON_PHOTO,
+      photo: "",
       role: "Faculty Coordinator",
       description: ANON_BIO,
       longBio: ANON_BIO,
@@ -234,8 +236,8 @@ export const leadership = {
 function withProfile(person, { team, role }) {
   const defaultBio =
     role === "Head"
-      ? `${person.name} leads the ${team} team, setting direction and keeping the crew aligned with the rest of TEDxJEC.`
-      : `${person.name} is a core member of the ${team} team, contributing hands-on to everything the team ships.`;
+      ? `${person.name} heads the ${team} team, setting the direction and keeping everyone moving toward it together.`
+      : `${person.name} is part of the ${team} team, pitching in on whatever that team needs to get done.`;
 
   return {
     bio: defaultBio,
@@ -263,23 +265,25 @@ const rawTier2Teams = [
   {
     id: "treasurer-budgeting",
     name: "Treasurer & Budgeting",
-    description: "Tracks the budget, manages vendor and sponsor payments, and leads sponsorship outreach.",
-    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+    description:
+      "This team keeps the budget honest. They handle vendor and sponsor payments day to day, and lead the outreach that brings sponsors on board in the first place.",
+    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     ],
   },
   {
     id: "volunteer",
     name: "Volunteer",
-    description: "Recruits volunteers and manages on-ground logistics — ushers, registration, seating, and hospitality.",
-    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+    description:
+      "This team recruits and manages the volunteers who keep event day running. That covers ushering, registration, seating, and hospitality — basically anywhere attendees need a hand.",
+    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     ],
   },
 ];
@@ -288,34 +292,37 @@ const rawTier3Teams = [
   {
     id: "media",
     name: "Media",
-    description: "Photography, videography, social media, and all written/visual content for the event.",
-    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+    description:
+      "This team handles how the event looks and sounds to everyone who isn't in the room: photography, videography, social media, and the written and visual content that goes out around it.",
+    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     ],
   },
   {
     id: "ambience",
     name: "Ambience",
-    description: "Stage design, venue decor, signage, and the overall look of the space.",
-    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+    description:
+      "This team shapes what the venue actually feels like on the day — stage design, decor, signage, and the overall look of the space.",
+    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     ],
   },
   {
     id: "tech",
     name: "Tech",
-    description: "AV/lighting coordination, the recording feed, and the event website.",
-    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+    description:
+      "This team keeps the technical side running: AV and lighting coordination, the recording feed, and the event website itself.",
+    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     ],
   },
 ];

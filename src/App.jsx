@@ -6,7 +6,6 @@ import Team from "./components/Team";
 import JoinTeam from "./components/JoinTeam";
 import About from "./components/About";
 import Footer from "./components/Footer";
-import SectionDivider from "./components/SectionDivider";
 
 function App() {
   return (
@@ -14,15 +13,10 @@ function App() {
       <Navbar />
       <main>
         <Hero />
-        <SectionDivider />
         <About />
-        <SectionDivider />
         <Speakers />
-        <SectionDivider />
         <Tickets />
-        <SectionDivider />
         <Team />
-        <SectionDivider />
         <JoinTeam />
       </main>
       <Footer />

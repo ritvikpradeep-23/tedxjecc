@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Card from "./Card";
 import Reveal from "./Reveal";
 import ProfileModal from "./ProfileModal";
 
@@ -8,29 +7,26 @@ export default function SpeakerCard({ speaker, delay = 0 }) {
 
   return (
     <>
-      <Reveal delay={delay} className="group h-full">
-        <Card
-          as="button"
+      <Reveal delay={delay}>
+        <button
           type="button"
           onClick={() => setOpen(true)}
-          className="overflow-hidden h-full w-full flex flex-col text-left cursor-pointer"
+          className="group w-full flex items-center gap-4 sm:gap-5 py-4 text-left hover:bg-white/5 transition-colors duration-200 cursor-pointer rounded-lg px-2 -mx-2"
         >
-          <div className="aspect-square overflow-hidden">
-            <img
-              src={speaker.photo}
-              alt={`Portrait of ${speaker.name}`}
-              loading="lazy"
-              className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
-            />
-          </div>
-          <div className="p-5 flex flex-col flex-1">
-            <h3 className="heading-md text-white">{speaker.name}</h3>
-            <p className="text-white/70 text-xs font-semibold uppercase tracking-wide mt-1">
+          <img
+            src={speaker.photo}
+            alt={`Portrait of ${speaker.name}`}
+            loading="lazy"
+            className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 shrink-0"
+          />
+          <div className="flex-1 min-w-0">
+            <h3 className="heading-md text-white truncate">{speaker.name}</h3>
+            <p className="text-white/70 text-xs font-semibold uppercase tracking-wide mt-0.5 truncate">
               {speaker.bio}
             </p>
-            <p className="text-white/60 text-sm mt-3 leading-snug">"{speaker.talkTitle}"</p>
+            <p className="text-white/60 text-sm mt-1 italic truncate">"{speaker.talkTitle}"</p>
           </div>
-        </Card>
+        </button>
       </Reveal>
 
       <ProfileModal

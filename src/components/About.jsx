@@ -4,7 +4,7 @@ import Reveal from "./Reveal";
 
 export default function About() {
   return (
-    <Section id="theme" tone="charcoal" container="narrow" pattern="circles">
+    <Section id="theme" tone="charcoal" container="narrow">
       <Reveal className="text-center">
         <span className="caption-label">This Year's Theme</span>
         <h2 className="heading-xl text-white mt-4">{eventTheme.name}</h2>
