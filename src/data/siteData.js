@@ -84,7 +84,7 @@ const anonContact = { linkedin: "", whatsapp: "", email: "" };
 
 const rawFeaturedSpeakers = [
   {
-    name: "Ananya Rao",
+    name: "Test Speaker 1",
     photo: "https://i.pravatar.cc/300?img=32",
     bio: "AI Researcher & Ethicist",
     talkTitle: "Teaching Machines to Say 'I Don't Know'",
@@ -93,7 +93,7 @@ const rawFeaturedSpeakers = [
       "Ananya studies the boundary between machine confidence and machine competence. Her work with model uncertainty has shaped how several labs think about deploying AI in high-stakes settings. She's spoken at three national conferences on responsible AI.",
   },
   {
-    name: "Rohan Mehta",
+    name: "Test Speaker 2",
     photo: "https://i.pravatar.cc/300?img=12",
     bio: "Climate-Tech Founder",
     talkTitle: "Carbon Capture at the Speed of Startups",
@@ -102,7 +102,7 @@ const rawFeaturedSpeakers = [
       "Rohan founded his first carbon-capture startup at 22, straight out of a mechanical engineering degree. He now advises two more, and spends most of his time convincing investors that climate hardware can move as fast as software.",
   },
   {
-    name: "Dr. Leela Nair",
+    name: "Test Speaker 3",
     photo: "https://i.pravatar.cc/300?img=45",
     bio: "Neuroscientist",
     talkTitle: "The Brain's Blueprint for Creativity",
@@ -111,7 +111,7 @@ const rawFeaturedSpeakers = [
       "Dr. Nair runs a cognitive neuroscience lab studying creativity under improvisational pressure. Her research has been featured in several science journals, and she still plays semi-professional jazz piano on weekends.",
   },
   {
-    name: "Kabir Sen",
+    name: "Test Speaker 4",
     photo: "https://i.pravatar.cc/300?img=15",
     bio: "Documentary Filmmaker",
     talkTitle: "Bearing Witness in the Age of Deepfakes",
@@ -120,7 +120,7 @@ const rawFeaturedSpeakers = [
       "Kabir has spent a decade filming conflict zones and quiet rural stories alike. His latest project examines how synthetic media is changing what audiences believe — and what filmmakers owe them in return.",
   },
   {
-    name: "Meera Iyer",
+    name: "Test Speaker 5",
     photo: "https://i.pravatar.cc/300?img=47",
     bio: "Urban Designer",
     talkTitle: "Cities That Heal Instead of Harm",
@@ -132,7 +132,7 @@ const rawFeaturedSpeakers = [
 
 const rawOpenCallSpeakers = [
   {
-    name: "Arjun Vashisht",
+    name: "Test Speaker 6",
     photo: "https://i.pravatar.cc/300?img=51",
     bio: "Final-Year CS Student",
     talkTitle: "What Debugging Taught Me About Patience",
@@ -141,7 +141,7 @@ const rawOpenCallSpeakers = [
       "Arjun spends most nights deep in compiler errors and most mornings explaining them to confused juniors. He's building a small open-source tool to help students debug faster — and better understand why they were stuck.",
   },
   {
-    name: "Sneha Kulkarni",
+    name: "Test Speaker 7",
     photo: "https://i.pravatar.cc/300?img=26",
     bio: "Student Entrepreneur",
     talkTitle: "Building a Business Out of a Hostel Room",
@@ -150,7 +150,7 @@ const rawOpenCallSpeakers = [
       "Sneha started selling handmade notebooks out of her hostel room in first year. Eighteen months later, she runs a small team and ships across three cities — all while finishing her degree.",
   },
   {
-    name: "Farhan Ali",
+    name: "Test Speaker 8",
     photo: "https://i.pravatar.cc/300?img=13",
     bio: "Para-Athlete",
     talkTitle: "Redefining the Finish Line",
@@ -159,7 +159,7 @@ const rawOpenCallSpeakers = [
       "Farhan competes nationally in para-athletics after an accident changed his relationship with his own body. He now coaches younger athletes and speaks about redefining what a finish line even means.",
   },
   {
-    name: "Priya Deshmukh",
+    name: "Test Speaker 9",
     photo: "https://i.pravatar.cc/300?img=44",
     bio: "Folk Musician",
     talkTitle: "Keeping Ancestral Melodies Alive",
@@ -168,7 +168,7 @@ const rawOpenCallSpeakers = [
       "Priya has spent three years documenting disappearing folk traditions from her grandmother's region. She performs these songs herself, blending them with contemporary arrangements for new audiences.",
   },
   {
-    name: "Devansh Kapoor",
+    name: "Test Speaker 10",
     photo: "https://i.pravatar.cc/300?img=8",
     bio: "Robotics Hobbyist",
     talkTitle: "Building Robots With Spare Parts",

@@ -62,6 +62,7 @@ export default function OrdersTable({ orders, totalRevenue, onDelete, onResendEm
               <th className="px-4 py-3 whitespace-nowrap">Status</th>
               <th className="px-4 py-3 whitespace-nowrap">Checked In</th>
               <th className="px-4 py-3 whitespace-nowrap">Submitted</th>
+              <th className="px-4 py-3 whitespace-nowrap">Ticket Link</th>
               <th className="px-4 py-3 whitespace-nowrap">Actions</th>
             </tr>
           </thead>
@@ -79,6 +80,20 @@ export default function OrdersTable({ orders, totalRevenue, onDelete, onResendEm
                   <CheckedInBadge checkedInAt={o.checked_in_at} />
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap">{new Date(o.created_at).toLocaleString()}</td>
+                <td className="px-4 py-3 whitespace-nowrap">
+                  {o.status === "approved" && o.uuid ? (
+                    <a
+                      href={`/ticket/${o.uuid}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-tedx-red hover:underline text-xs font-semibold"
+                    >
+                      Open ticket →
+                    </a>
+                  ) : (
+                    <span className="text-white/30 text-xs">—</span>
+                  )}
+                </td>
                 <td className="px-4 py-3">
                   <div className="flex gap-3">
                     {o.status === "approved" && !o.is_test && (
@@ -105,7 +120,7 @@ export default function OrdersTable({ orders, totalRevenue, onDelete, onResendEm
             ))}
             {orders.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-6 text-center text-white/40">
+                <td colSpan={9} className="px-4 py-6 text-center text-white/40">
                   No orders yet.
                 </td>
               </tr>
