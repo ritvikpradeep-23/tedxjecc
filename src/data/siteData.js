@@ -25,6 +25,15 @@ export const eventTheme = {
   disciplines: ["Technology", "Social Impact", "Science", "Art", "Personal Growth"],
 };
 
+// Single config point for every "apply" link on the site (Open Roles stubs,
+// the "See All Open Roles" button, and the Join Us CTA). Empty = no live
+// application link yet, so every one of those renders in a disabled
+// "Applications opening soon" state. Set this once — via env var
+// (VITE_APPLY_FORM_URL) or directly here — and every apply link across the
+// site re-enables and points at it, opened in a new tab. No per-component
+// wiring needed.
+export const APPLY_FORM_URL = import.meta.env.VITE_APPLY_FORM_URL || "";
+
 export const navLinks = [
   { label: "Speakers", href: "#speakers" },
   { label: "Tickets", href: "#tickets" },
@@ -62,9 +71,11 @@ function withContact(person) {
 
 // Shared placeholder for Meet the Team members who haven't been confirmed
 // yet. To fill someone in once you have their real info, replace `name`,
-// `photo`, and the bio/contact fields directly on their entry below — see
-// README.md for the full walkthrough.
-const ANON_PHOTO = "/images/avatar-placeholder.svg";
+// `photo` (a real image URL), and the bio/contact fields directly on their
+// entry below — see README.md for the full walkthrough. An empty `photo`
+// renders no avatar at all — this data only ever surfaces confirmed people
+// with real photos in "Meet the Team"; everyone still `name: "TBD"` shows up
+// instead as an aggregate "Open Roles" stub, never as a placeholder card.
 const ANON_BIO = "To be announced";
 const anonContact = { linkedin: "", whatsapp: "", email: "" };
 
@@ -197,26 +208,32 @@ const rawLeadership = {
   members: [
     {
       name: "TBD",
-      photo: ANON_PHOTO,
+      photo: "",
       role: "Co-Organizer",
       description: ANON_BIO,
       longBio: ANON_BIO,
+      roleDescription:
+        "Runs point on the big calls — budget sign-off, vendor decisions, what happens if something goes wrong on the day — and represents TEDxJEC to the college administration and the TEDx licensing team.",
       ...anonContact,
     },
     {
       name: "TBD",
-      photo: ANON_PHOTO,
+      photo: "",
       role: "Co-Organizer",
       description: ANON_BIO,
       longBio: ANON_BIO,
+      roleDescription:
+        "Runs point on the big calls — budget sign-off, vendor decisions, what happens if something goes wrong on the day — and represents TEDxJEC to the college administration and the TEDx licensing team.",
       ...anonContact,
     },
     {
       name: "TBD",
-      photo: ANON_PHOTO,
+      photo: "",
       role: "Faculty Coordinator",
       description: ANON_BIO,
       longBio: ANON_BIO,
+      roleDescription:
+        "The formal link to the institution — signs off on venue bookings and funding, and is the name attached whenever a decision needs faculty authority behind it.",
       ...anonContact,
     },
   ],
@@ -266,11 +283,15 @@ const rawTier2Teams = [
     name: "Treasurer & Budgeting",
     description:
       "This team keeps the budget honest. They handle vendor and sponsor payments day to day, and lead the outreach that brings sponsors on board in the first place.",
-    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+    headDescription:
+      "Owns the budget end to end — approves spends, chases sponsor payments, and is the one every vendor invoice actually goes through.",
+    memberDescription:
+      "Tracks incoming and outgoing payments day to day and helps with sponsor outreach — cold emails, follow-ups, keeping the numbers straight.",
+    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     ],
   },
   {
@@ -278,11 +299,15 @@ const rawTier2Teams = [
     name: "Volunteer",
     description:
       "This team recruits and manages the volunteers who keep event day running. That covers ushering, registration, seating, and hospitality — basically anywhere attendees need a hand.",
-    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+    headDescription:
+      "Recruits and trains the volunteer team, builds the day-of schedule, then runs the floor on event day — who's on the door, who's seating people, who's making sure speakers have water.",
+    memberDescription:
+      "Works an assigned station on event day — door, registration, seating, or hospitality — and does whatever that shift needs in the moment.",
+    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     ],
   },
 ];
@@ -293,11 +318,15 @@ const rawTier3Teams = [
     name: "Media",
     description:
       "This team handles how the event looks and sounds to everyone who isn't in the room: photography, videography, social media, and the written and visual content that goes out around it.",
-    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+    headDescription:
+      "Decides what gets shot and posted, sets the visual style for the event's social presence, and signs off before anything goes out publicly.",
+    memberDescription:
+      "Shoots photos or video on the day, or works on the graphics and captions going out around it — whichever the team needs covered.",
+    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     ],
   },
   {
@@ -305,11 +334,15 @@ const rawTier3Teams = [
     name: "Ambience",
     description:
       "This team shapes what the venue actually feels like on the day — stage design, decor, signage, and the overall look of the space.",
-    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+    headDescription:
+      "Designs how the venue looks — stage, signage, decor — and manages what actually gets built and installed before doors open.",
+    memberDescription:
+      "Helps build and set up the decor and signage on event day, and keeps touching things up as the space gets used.",
+    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     ],
   },
   {
@@ -317,11 +350,15 @@ const rawTier3Teams = [
     name: "Tech",
     description:
       "This team keeps the technical side running: AV and lighting coordination, the recording feed, and the event website itself.",
-    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+    headDescription:
+      "Owns AV and lighting cues during the event and makes sure the recording or livestream actually works when it matters.",
+    memberDescription:
+      "Runs a specific technical station on the day — mics, lighting, camera, or the website — and troubleshoots it live if something breaks.",
+    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     ],
   },
 ];
@@ -343,3 +380,80 @@ export const joinFormFields = {
   whyPlaceholder: "Tell us why this team excites you and what you'd bring to it...",
   portfolioPlaceholder: "Link to your work, resume, or social profile (optional)",
 };
+
+// "Meet the Team" (real, confirmed people only — every entry still named
+// "TBD" is excluded, never rendered as a placeholder row) and "Open Roles"
+// (every still-unfilled seat, grouped by team + role so three identical open
+// "Member" seats on one team collapse into a single stub with a seat count,
+// rather than three duplicate cards). Both are derived from the same
+// leadership/tier2Teams/tier3Teams data above, so a role disappears from
+// Open Roles and its person appears in Meet the Team the moment you replace
+// their `name` — no separate list to keep in sync by hand.
+function computeConfirmedMembers() {
+  const list = [];
+  leadership.members.forEach((person) => {
+    if (person.name !== "TBD") list.push({ ...person, team: null });
+  });
+  [...tier2Teams, ...tier3Teams].forEach((team) => {
+    if (team.head.name !== "TBD") list.push(team.head);
+    team.members.forEach((member) => {
+      if (member.name !== "TBD") list.push(member);
+    });
+  });
+  return list;
+}
+
+function computeOpenRoles() {
+  const groups = [];
+
+  const leadershipByRole = new Map();
+  leadership.members.forEach((person) => {
+    if (person.name !== "TBD") return;
+    const existing = leadershipByRole.get(person.role);
+    if (existing) {
+      existing.count += 1;
+    } else {
+      leadershipByRole.set(person.role, {
+        tierLabel: `Tier 1 — ${tierLabels.tier1}`,
+        team: null,
+        role: person.role,
+        count: 1,
+        description: person.roleDescription,
+      });
+    }
+  });
+  groups.push(...leadershipByRole.values());
+
+  [
+    [tier2Teams, 2, tierLabels.tier2],
+    [tier3Teams, 3, tierLabels.tier3],
+  ].forEach(([teams, tierNumber, tierName]) => {
+    teams.forEach((team) => {
+      const tierLabel = `Tier ${tierNumber} — ${tierName}`;
+      if (team.head.name === "TBD") {
+        groups.push({
+          tierLabel,
+          team: team.name,
+          role: "Head",
+          count: 1,
+          description: team.headDescription,
+        });
+      }
+      const openMembers = team.members.filter((member) => member.name === "TBD").length;
+      if (openMembers > 0) {
+        groups.push({
+          tierLabel,
+          team: team.name,
+          role: "Member",
+          count: openMembers,
+          description: team.memberDescription,
+        });
+      }
+    });
+  });
+
+  return groups;
+}
+
+export const confirmedMembers = computeConfirmedMembers();
+export const openRoles = computeOpenRoles();
