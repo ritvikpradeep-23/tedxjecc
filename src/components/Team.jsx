@@ -1,8 +1,6 @@
-import { useState } from "react";
 import { leadership, tier2Teams, tier3Teams, tierLabels } from "../data/siteData";
-import TeamRoleRow from "./TeamRoleRow";
+import OrganizerCard from "./OrganizerCard";
 import TeamBlock from "./TeamBlock";
-import ProfileModal from "./ProfileModal";
 import SectionHeading from "./SectionHeading";
 import Section from "./Section";
 import Reveal from "./Reveal";
@@ -20,8 +18,6 @@ function TierLabel({ eyebrow, title }) {
 }
 
 export default function Team() {
-  const [selectedLeader, setSelectedLeader] = useState(null);
-
   return (
     <Section id="team" tone="black" container="wide">
       <SectionHeading
@@ -32,43 +28,27 @@ export default function Team() {
 
       <TierLabel eyebrow="Tier 1" title={tierLabels.tier1} />
       <Reveal className="mb-20">
-        <p className="text-white/55 text-sm max-w-2xl mb-6">{leadership.description}</p>
-        <div className="max-w-2xl mx-auto divide-y divide-white/10">
+        <p className="text-white/55 text-sm max-w-2xl mb-8">{leadership.description}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {leadership.members.map((person, i) => (
-            <TeamRoleRow key={`${person.name}-${i}`} person={person} role={person.role} onOpen={setSelectedLeader} />
+            <OrganizerCard key={`${person.name}-${i}`} organizer={person} delay={i * 100} />
           ))}
         </div>
       </Reveal>
 
       <TierLabel eyebrow="Tier 2" title={tierLabels.tier2} />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-10 mb-20">
-        {tier2Teams.map((team) => (
-          <TeamBlock key={team.id} team={team} />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-20">
+        {tier2Teams.map((team, i) => (
+          <TeamBlock key={team.id} team={team} index={i} />
         ))}
       </div>
 
       <TierLabel eyebrow="Tier 3" title={tierLabels.tier3} />
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-10">
-        {tier3Teams.map((team) => (
-          <TeamBlock key={team.id} team={team} />
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {tier3Teams.map((team, i) => (
+          <TeamBlock key={team.id} team={team} index={i} compact />
         ))}
       </div>
-
-      <ProfileModal
-        isOpen={Boolean(selectedLeader)}
-        onClose={() => setSelectedLeader(null)}
-        data={
-          selectedLeader && {
-            name: selectedLeader.name,
-            photo: selectedLeader.photo,
-            roleLabel: selectedLeader.role,
-            bio: selectedLeader.longBio,
-            linkedin: selectedLeader.linkedin,
-            whatsapp: selectedLeader.whatsapp,
-            email: selectedLeader.email,
-          }
-        }
-      />
     </Section>
   );
 }

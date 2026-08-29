@@ -62,10 +62,9 @@ function withContact(person) {
 
 // Shared placeholder for Meet the Team members who haven't been confirmed
 // yet. To fill someone in once you have their real info, replace `name`,
-// `photo` (a real image URL), and the bio/contact fields directly on their
-// entry below — see README.md for the full walkthrough. An empty `photo`
-// renders no avatar at all (the Team section's "Open" state); once `photo`
-// is set, that row automatically switches to its "Confirmed" state.
+// `photo`, and the bio/contact fields directly on their entry below — see
+// README.md for the full walkthrough.
+const ANON_PHOTO = "/images/avatar-placeholder.svg";
 const ANON_BIO = "To be announced";
 const anonContact = { linkedin: "", whatsapp: "", email: "" };
 
@@ -198,7 +197,7 @@ const rawLeadership = {
   members: [
     {
       name: "TBD",
-      photo: "",
+      photo: ANON_PHOTO,
       role: "Co-Organizer",
       description: ANON_BIO,
       longBio: ANON_BIO,
@@ -206,7 +205,7 @@ const rawLeadership = {
     },
     {
       name: "TBD",
-      photo: "",
+      photo: ANON_PHOTO,
       role: "Co-Organizer",
       description: ANON_BIO,
       longBio: ANON_BIO,
@@ -214,7 +213,7 @@ const rawLeadership = {
     },
     {
       name: "TBD",
-      photo: "",
+      photo: ANON_PHOTO,
       role: "Faculty Coordinator",
       description: ANON_BIO,
       longBio: ANON_BIO,
@@ -267,11 +266,11 @@ const rawTier2Teams = [
     name: "Treasurer & Budgeting",
     description:
       "This team keeps the budget honest. They handle vendor and sponsor payments day to day, and lead the outreach that brings sponsors on board in the first place.",
-    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     ],
   },
   {
@@ -279,11 +278,11 @@ const rawTier2Teams = [
     name: "Volunteer",
     description:
       "This team recruits and manages the volunteers who keep event day running. That covers ushering, registration, seating, and hospitality — basically anywhere attendees need a hand.",
-    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     ],
   },
 ];
@@ -294,11 +293,11 @@ const rawTier3Teams = [
     name: "Media",
     description:
       "This team handles how the event looks and sounds to everyone who isn't in the room: photography, videography, social media, and the written and visual content that goes out around it.",
-    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     ],
   },
   {
@@ -306,11 +305,11 @@ const rawTier3Teams = [
     name: "Ambience",
     description:
       "This team shapes what the venue actually feels like on the day — stage design, decor, signage, and the overall look of the space.",
-    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     ],
   },
   {
@@ -318,11 +317,11 @@ const rawTier3Teams = [
     name: "Tech",
     description:
       "This team keeps the technical side running: AV and lighting coordination, the recording feed, and the event website itself.",
-    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+    head: { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     members: [
-      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
+      { name: "TBD", photo: ANON_PHOTO, bio: ANON_BIO, ...anonContact },
     ],
   },
 ];
