@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { confirmedMembers, openRoles } from "../data/siteData";
-import ProfileModal from "./ProfileModal";
+import MemberCard from "./MemberCard";
 import OpenRoleStub from "./OpenRoleStub";
+import OrgChart from "./OrgChart";
 import ApplyCTA from "./ApplyCTA";
 import SectionHeading from "./SectionHeading";
 import Section from "./Section";
@@ -19,49 +20,31 @@ function PartLabel({ eyebrow, title }) {
   );
 }
 
-function ConfirmedMemberRow({ person, onOpen }) {
-  const hasPhoto = Boolean(person.photo);
-  const roleLabel = person.team ? `${person.role} · ${person.team}` : person.role;
-
+function TabButton({ active, onClick, children }) {
   return (
     <button
       type="button"
-      onClick={() => onOpen(person)}
-      className="w-full flex items-center gap-4 py-3.5 text-left hover:bg-white/5 transition-colors duration-200 cursor-pointer rounded-lg px-2 -mx-2"
+      onClick={onClick}
+      className={`px-5 py-2.5 text-xs font-bold uppercase tracking-wide rounded-full cursor-pointer transition-colors duration-200 ${
+        active ? "bg-tedx-red text-white" : "bg-transparent text-white/50 border border-white/15 hover:text-white hover:border-white/40"
+      }`}
     >
-      {hasPhoto && (
-        <img
-          src={person.photo}
-          alt={`Portrait of ${person.name}`}
-          className="w-11 h-11 rounded-full object-cover shrink-0"
-        />
-      )}
-      <div className="flex-1 min-w-0">
-        <p className="font-semibold text-white text-sm sm:text-base truncate">{person.name}</p>
-        <p className="text-white/50 text-xs sm:text-sm mt-0.5 truncate">{roleLabel}</p>
-      </div>
+      {children}
     </button>
   );
 }
 
-export default function Team() {
-  const [selected, setSelected] = useState(null);
+function PeopleTab() {
   const totalOpenSeats = openRoles.reduce((sum, r) => sum + r.count, 0);
 
   return (
-    <Section id="team" tone="black" container="wide">
-      <SectionHeading
-        eyebrow="Behind the Curtain"
-        title="The Team"
-        subtitle="A 23-person core team, organized across three tiers of leadership and execution."
-      />
-
+    <>
       <PartLabel eyebrow="Confirmed" title="Meet the Team" />
-      <Reveal className="mb-20 max-w-2xl mx-auto">
+      <div className="mb-20 max-w-2xl mx-auto">
         {confirmedMembers.length > 0 ? (
           <div className="divide-y divide-white/10">
             {confirmedMembers.map((person, i) => (
-              <ConfirmedMemberRow key={`${person.name}-${i}`} person={person} onOpen={setSelected} />
+              <MemberCard key={`${person.name}-${i}`} person={person} delay={i * 40} />
             ))}
           </div>
         ) : (
@@ -69,7 +52,7 @@ export default function Team() {
             No confirmed members yet — check back soon.
           </p>
         )}
-      </Reveal>
+      </div>
 
       <PartLabel eyebrow={`${totalOpenSeats} seats`} title="Open Roles" />
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -85,22 +68,31 @@ export default function Team() {
       <Reveal className="flex justify-center mt-12">
         <ApplyCTA label="See All Open Roles" size="lg" />
       </Reveal>
+    </>
+  );
+}
 
-      <ProfileModal
-        isOpen={Boolean(selected)}
-        onClose={() => setSelected(null)}
-        data={
-          selected && {
-            name: selected.name,
-            photo: selected.photo,
-            roleLabel: selected.team ? `${selected.role} · ${selected.team}` : selected.role,
-            bio: selected.bio || selected.longBio,
-            linkedin: selected.linkedin,
-            whatsapp: selected.whatsapp,
-            email: selected.email,
-          }
-        }
+export default function Team() {
+  const [tab, setTab] = useState("people"); // people | org
+
+  return (
+    <Section id="team" tone="black" container="wide">
+      <SectionHeading
+        eyebrow="Behind the Curtain"
+        title="The Team"
+        subtitle="A 23-person core team, organized across three tiers of leadership and execution."
       />
+
+      <Reveal className="flex justify-center gap-3 mb-14">
+        <TabButton active={tab === "people"} onClick={() => setTab("people")}>
+          People
+        </TabButton>
+        <TabButton active={tab === "org"} onClick={() => setTab("org")}>
+          Org Chart
+        </TabButton>
+      </Reveal>
+
+      {tab === "people" ? <PeopleTab /> : <OrgChart />}
     </Section>
   );
 }

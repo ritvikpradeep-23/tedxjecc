@@ -48,8 +48,11 @@ export const socialLinks = [
   { label: "X", href: "#" },
 ];
 
-// Deterministic placeholder contact details — swap for real profile links later.
-function slugify(name) {
+// Deterministic placeholder contact details — swap for real profile links
+// later. Exported so the phone-reveal button and lib/teamContacts.js (the
+// server-only file that actually holds numbers) key off the exact same slug
+// — see src/components/PhoneReveal.jsx.
+export function slugify(name) {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, "");
 }
 
