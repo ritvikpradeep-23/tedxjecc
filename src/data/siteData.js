@@ -207,31 +207,37 @@ const rawLeadership = {
     "This tier holds overall responsibility for the event. They make the final calls and serve as the required liaison between TEDxJEC and the institution, as well as the TEDx program itself.",
   members: [
     {
-      name: "TBD",
+      name: "Ritvik Pradeep",
       photo: "",
       role: "Co-Organizer",
-      description: ANON_BIO,
-      longBio: ANON_BIO,
+      description:
+        "Runs point on the big calls — budget sign-off, vendor decisions, what happens if something goes wrong on the day — and represents TEDxJEC to the college administration and the TEDx licensing team.",
+      longBio:
+        "Runs point on the big calls — budget sign-off, vendor decisions, what happens if something goes wrong on the day — and represents TEDxJEC to the college administration and the TEDx licensing team.",
       roleDescription:
         "Runs point on the big calls — budget sign-off, vendor decisions, what happens if something goes wrong on the day — and represents TEDxJEC to the college administration and the TEDx licensing team.",
       ...anonContact,
     },
     {
-      name: "TBD",
+      name: "Sanvya Sandeep",
       photo: "",
       role: "Co-Organizer",
-      description: ANON_BIO,
-      longBio: ANON_BIO,
+      description:
+        "Runs point on the big calls — budget sign-off, vendor decisions, what happens if something goes wrong on the day — and represents TEDxJEC to the college administration and the TEDx licensing team.",
+      longBio:
+        "Runs point on the big calls — budget sign-off, vendor decisions, what happens if something goes wrong on the day — and represents TEDxJEC to the college administration and the TEDx licensing team.",
       roleDescription:
         "Runs point on the big calls — budget sign-off, vendor decisions, what happens if something goes wrong on the day — and represents TEDxJEC to the college administration and the TEDx licensing team.",
       ...anonContact,
     },
     {
-      name: "TBD",
+      name: "Melvinraj C R",
       photo: "",
-      role: "Faculty Coordinator",
-      description: ANON_BIO,
-      longBio: ANON_BIO,
+      role: "Staff Advisor",
+      description:
+        "The formal link to the institution — signs off on venue bookings and funding, and is the name attached whenever a decision needs faculty authority behind it.",
+      longBio:
+        "The formal link to the institution — signs off on venue bookings and funding, and is the name attached whenever a decision needs faculty authority behind it.",
       roleDescription:
         "The formal link to the institution — signs off on venue bookings and funding, and is the name attached whenever a decision needs faculty authority behind it.",
       ...anonContact,
@@ -287,7 +293,7 @@ const rawTier2Teams = [
       "Owns the budget end to end — approves spends, chases sponsor payments, and is the one every vendor invoice actually goes through.",
     memberDescription:
       "Tracks incoming and outgoing payments day to day and helps with sponsor outreach — cold emails, follow-ups, keeping the numbers straight.",
-    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+    head: { name: "Pallavi V", photo: "", ...anonContact },
     members: [
       { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
       { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
@@ -303,7 +309,7 @@ const rawTier2Teams = [
       "Recruits and trains the volunteer team, builds the day-of schedule, then runs the floor on event day — who's on the door, who's seating people, who's making sure speakers have water.",
     memberDescription:
       "Works an assigned station on event day — door, registration, seating, or hospitality — and does whatever that shift needs in the moment.",
-    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+    head: { name: "Muhammed Alsabith Abu", photo: "", ...anonContact },
     members: [
       { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
       { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },

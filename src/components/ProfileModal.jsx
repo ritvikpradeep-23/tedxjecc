@@ -72,11 +72,13 @@ export default function ProfileModal({ isOpen, data, onClose }) {
         </button>
 
         <div className="p-6 sm:p-8 flex flex-col items-center text-center">
-          <img
-            src={data.photo}
-            alt={`Portrait of ${data.name}`}
-            className="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-tedx-red/70"
-          />
+          {data.photo && (
+            <img
+              src={data.photo}
+              alt={`Portrait of ${data.name}`}
+              className="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-tedx-red/70"
+            />
+          )}
           <h3 className="heading-lg text-white mt-5">{data.name}</h3>
           {data.roleLabel && (
             <span className="text-white/70 text-xs font-semibold uppercase tracking-widest mt-1">
