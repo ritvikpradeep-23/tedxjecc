@@ -246,8 +246,8 @@ const rawLeadership = {
       ...anonContact,
     },
     {
-      // Second faculty advisor — replace "TBD" with their name once confirmed.
-      name: "TBD",
+      // Second faculty advisor.
+      name: "Anto Zacharia",
       photo: "",
       role: "Faculty Advisor",
       description:
