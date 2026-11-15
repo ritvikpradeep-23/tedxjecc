@@ -175,14 +175,14 @@ export const ticketTiers = [
   {
     id: "student",
     name: "Student",
-    price: "₹250",
+    price: "₹100",
     recommended: true,
     perks: ["Full-day entry", "Refreshments included", "Participation certificate"],
   },
   {
     id: "guest",
     name: "Guest / Public",
-    price: "₹300",
+    price: "₹100",
     recommended: false,
     perks: ["Full-day entry", "Refreshments included", "Participation certificate", "Reserved seating"],
   },
