@@ -21,7 +21,7 @@ hosted on Vercel.*
 
 ### The public-facing pages
 
-Everything on the main site (`tedxjecc-website.vercel.app`) is one continuous
+Everything on the main site (`tedxjeccheruthuruthy.vercel.app`) is one continuous
 scrolling page, built out of these sections/components, top to bottom:
 
 | Section | File | What it does |
