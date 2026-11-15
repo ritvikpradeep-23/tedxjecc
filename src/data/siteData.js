@@ -7,7 +7,6 @@ export const eventInfo = {
   time: "10:00 AM – 1:20 PM",
   venue: "Decinal Hall",
   tagline: "Ideas worth spreading, right here on campus",
-  affiliation: "Organized in association with IEEE Student Chapter & Dept. of Computer Science",
   contactEmail: "team@tedxjec.org",
   // Placeholder UPI ID for the ticket payment QR — swap for the real one
   // whenever it's ready. Nothing else needs to change; the QR is generated

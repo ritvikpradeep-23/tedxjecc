@@ -10,8 +10,6 @@ export default function Footer() {
           <span className="text-white">JEC</span>
         </a>
 
-        <p className="text-white/50 text-sm max-w-md">{eventInfo.affiliation}</p>
-
         <a href={`mailto:${eventInfo.contactEmail}`} className="text-white/70 text-sm hover:text-tedx-red transition-colors">
           {eventInfo.contactEmail}
         </a>
