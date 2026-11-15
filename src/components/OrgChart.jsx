@@ -16,7 +16,7 @@ function SeatPill({ label, filled, highlight }) {
 }
 
 // Leadership has no head/member hierarchy in the data — it's three flat
-// seats (two Co-Organizers, one Staff Advisor) with equal standing, not one
+// seats (Co-Organizer, Outreach Head, two Faculty Advisors) with equal standing, not one
 // head plus reports. Rendered as its own block of highlighted seats rather
 // than forcing a head/member split that doesn't reflect how the tier
 // actually works.

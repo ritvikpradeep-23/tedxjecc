@@ -212,13 +212,13 @@ const rawLeadership = {
     {
       name: "Ritvik Pradeep",
       photo: "",
-      role: "Co-Organizer",
+      role: "Outreach Head",
       description:
-        "Runs point on the big calls — budget sign-off, vendor decisions, what happens if something goes wrong on the day — and represents TEDxJEC to the college administration and the TEDx licensing team.",
+        "Leads outreach for TEDxJEC — reaching speakers, sponsors, partners and the wider community, and making sure the right people hear about the event and want to be part of it.",
       longBio:
-        "Runs point on the big calls — budget sign-off, vendor decisions, what happens if something goes wrong on the day — and represents TEDxJEC to the college administration and the TEDx licensing team.",
+        "Leads outreach for TEDxJEC — reaching speakers, sponsors, partners and the wider community, and making sure the right people hear about the event and want to be part of it.",
       roleDescription:
-        "Runs point on the big calls — budget sign-off, vendor decisions, what happens if something goes wrong on the day — and represents TEDxJEC to the college administration and the TEDx licensing team.",
+        "Leads outreach for TEDxJEC — reaching speakers, sponsors, partners and the wider community, and making sure the right people hear about the event and want to be part of it.",
       ...anonContact,
     },
     {
@@ -234,9 +234,22 @@ const rawLeadership = {
       ...anonContact,
     },
     {
-      name: "Melvinraj C R",
+      name: "Melvin Raj",
       photo: "",
-      role: "Staff Advisor",
+      role: "Faculty Advisor",
+      description:
+        "The formal link to the institution — signs off on venue bookings and funding, and is the name attached whenever a decision needs faculty authority behind it.",
+      longBio:
+        "The formal link to the institution — signs off on venue bookings and funding, and is the name attached whenever a decision needs faculty authority behind it.",
+      roleDescription:
+        "The formal link to the institution — signs off on venue bookings and funding, and is the name attached whenever a decision needs faculty authority behind it.",
+      ...anonContact,
+    },
+    {
+      // Second faculty advisor — replace "TBD" with their name once confirmed.
+      name: "TBD",
+      photo: "",
+      role: "Faculty Advisor",
       description:
         "The formal link to the institution — signs off on venue bookings and funding, and is the name attached whenever a decision needs faculty authority behind it.",
       longBio:
@@ -318,6 +331,19 @@ const rawTier2Teams = [
       { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
       { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
     ],
+  },
+  {
+    id: "logistics",
+    name: "Logistics",
+    description:
+      "This team makes sure everything and everyone ends up in the right place at the right time — equipment, supplies, transport, and the venue setup schedule.",
+    headDescription:
+      "Plans and tracks every physical moving part — equipment hire, supplies, transport for speakers, and the setup and teardown timeline for the venue.",
+    memberDescription:
+      "Helps move, set up and pack down equipment and supplies, and runs errands wherever the day needs them.",
+    // Replace "TBD" with the logistics core member's name once confirmed.
+    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+    members: [],
   },
 ];
 
