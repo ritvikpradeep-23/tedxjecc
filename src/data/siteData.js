@@ -7,7 +7,7 @@ export const eventInfo = {
   time: "10:00 AM – 1:20 PM",
   venue: "Decinal Hall",
   tagline: "Ideas worth spreading, right here on campus",
-  contactEmail: "team@tedxjec.org",
+  contactEmail: "tedxjectcr@gmail.com",
   // Placeholder UPI ID for the ticket payment QR — swap for the real one
   // whenever it's ready. Nothing else needs to change; the QR is generated
   // live from this value plus each ticket's price.
@@ -31,7 +31,7 @@ export const navLinks = [
 ];
 
 export const socialLinks = [
-  { label: "Instagram", href: "#" },
+  { label: "Instagram", href: "https://www.instagram.com/tedxjec_cheruthuruthy/" },
   { label: "LinkedIn", href: "#" },
   { label: "YouTube", href: "#" },
   { label: "X", href: "#" },
