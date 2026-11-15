@@ -331,8 +331,7 @@ const rawTier2Teams = [
       "Plans and tracks every physical moving part — equipment hire, supplies, transport for speakers, and the setup and teardown timeline for the venue.",
     memberDescription:
       "Helps move, set up and pack down equipment and supplies, and runs errands wherever the day needs them.",
-    // Replace "TBD" with the logistics core member's name once confirmed.
-    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+    head: { name: "Akash Aravind", photo: "", ...anonContact },
     members: [],
   },
 ];
