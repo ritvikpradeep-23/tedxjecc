@@ -1,8 +1,8 @@
-// Central config for TEDxJEC. Swap placeholder names/photos/copy with real
+// Central config for TEDxJEC Cheruthuruthy. Swap placeholder names/photos/copy with real
 // data as it becomes available — nothing elsewhere in the app should need to change.
 
 export const eventInfo = {
-  name: "TEDxJEC",
+  name: "TEDxJEC Cheruthuruthy",
   date: "Saturday, 10 October 2026",
   time: "10:00 AM – 1:20 PM",
   venue: "Decinal Hall",
@@ -197,18 +197,18 @@ export const ticketTiers = [
 // contact fields directly.
 const rawLeadership = {
   description:
-    "This tier holds overall responsibility for the event. They make the final calls and serve as the required liaison between TEDxJEC and the institution, as well as the TEDx program itself.",
+    "This tier holds overall responsibility for the event. They make the final calls and serve as the required liaison between TEDxJEC Cheruthuruthy and the institution, as well as the TEDx program itself.",
   members: [
     {
       name: "Sanvya Sandeep",
       photo: "",
       role: "Organizer",
       description:
-        "Runs point on the big calls — budget sign-off, vendor decisions, what happens if something goes wrong on the day — and represents TEDxJEC to the college administration and the TEDx licensing team.",
+        "Runs point on the big calls — budget sign-off, vendor decisions, what happens if something goes wrong on the day — and represents TEDxJEC Cheruthuruthy to the college administration and the TEDx licensing team.",
       longBio:
-        "Runs point on the big calls — budget sign-off, vendor decisions, what happens if something goes wrong on the day — and represents TEDxJEC to the college administration and the TEDx licensing team.",
+        "Runs point on the big calls — budget sign-off, vendor decisions, what happens if something goes wrong on the day — and represents TEDxJEC Cheruthuruthy to the college administration and the TEDx licensing team.",
       roleDescription:
-        "Runs point on the big calls — budget sign-off, vendor decisions, what happens if something goes wrong on the day — and represents TEDxJEC to the college administration and the TEDx licensing team.",
+        "Runs point on the big calls — budget sign-off, vendor decisions, what happens if something goes wrong on the day — and represents TEDxJEC Cheruthuruthy to the college administration and the TEDx licensing team.",
       ...anonContact,
     },
     {

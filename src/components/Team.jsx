@@ -83,7 +83,7 @@ export default function Team() {
       <SectionHeading
         eyebrow="Behind the Curtain"
         title="The Team"
-        subtitle="Everyone behind TEDxJEC, organized across leadership and the core teams."
+        subtitle="Everyone behind TEDxJEC Cheruthuruthy, organized across leadership and the core teams."
       />
 
       <div className="flex flex-col gap-6">

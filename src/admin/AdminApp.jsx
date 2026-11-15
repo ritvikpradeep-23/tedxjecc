@@ -172,7 +172,7 @@ export default function AdminApp() {
     <div className="min-h-screen bg-tedx-black px-6 py-10">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-10">
-          <h1 className="text-white text-2xl font-bold">TEDxJEC Admin</h1>
+          <h1 className="text-white text-2xl font-bold">TEDxJEC Cheruthuruthy Admin</h1>
           <div className="flex items-center gap-3">
             <a
               href="/check-in-dashboard"
