@@ -33,7 +33,7 @@ export const navLinks = [
 export const socialLinks = [
   { label: "Instagram", href: "https://www.instagram.com/tedxjec_cheruthuruthy/" },
   { label: "LinkedIn", href: "#" },
-  { label: "YouTube", href: "#" },
+  { label: "YouTube", href: "https://m.youtube.com/channel/UCEY94smZkN3wKll9uvV9avQ?ra=m" },
   { label: "X", href: "#" },
 ];
 
