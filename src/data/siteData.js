@@ -25,15 +25,6 @@ export const eventTheme = {
   disciplines: ["Technology", "Social Impact", "Science", "Art", "Personal Growth"],
 };
 
-// Single config point for every "apply" link on the site (Open Roles stubs,
-// the "See All Open Roles" button, and the Join Us CTA). Empty = no live
-// application link yet, so every one of those renders in a disabled
-// "Applications opening soon" state. Set this once — via env var
-// (VITE_APPLY_FORM_URL) or directly here — and every apply link across the
-// site re-enables and points at it, opened in a new tab. No per-component
-// wiring needed.
-export const APPLY_FORM_URL = import.meta.env?.VITE_APPLY_FORM_URL || "";
-
 export const navLinks = [
   { label: "Speakers", href: "#speakers" },
   { label: "Tickets", href: "#tickets" },
@@ -407,14 +398,12 @@ export const tierLabels = {
   tier3: "Outreach and Production",
 };
 
-// "Meet the Team" (real, confirmed people only — every entry still named
+// "Meet the Team": real, confirmed people only (every entry still named
 // "TBD" is excluded, never rendered as a placeholder row) and "Open Roles"
 // (every still-unfilled seat, grouped by team + role so three identical open
 // "Member" seats on one team collapse into a single stub with a seat count,
-// rather than three duplicate cards). Both are derived from the same
-// leadership/tier2Teams/tier3Teams data above, so a role disappears from
-// Open Roles and its person appears in Meet the Team the moment you replace
-// their `name` — no separate list to keep in sync by hand.
+// Derived from the leadership/tier2Teams/tier3Teams data above, so a person
+// appears in the team list the moment you replace their `name`.
 function computeConfirmedMembers() {
   const list = [];
   leadership.members.forEach((person) => {
@@ -429,57 +418,4 @@ function computeConfirmedMembers() {
   return list;
 }
 
-function computeOpenRoles() {
-  const groups = [];
-
-  const leadershipByRole = new Map();
-  leadership.members.forEach((person) => {
-    if (person.name !== "TBD") return;
-    const existing = leadershipByRole.get(person.role);
-    if (existing) {
-      existing.count += 1;
-    } else {
-      leadershipByRole.set(person.role, {
-        tierLabel: `Tier 1 — ${tierLabels.tier1}`,
-        team: null,
-        role: person.role,
-        count: 1,
-        description: person.roleDescription,
-      });
-    }
-  });
-  groups.push(...leadershipByRole.values());
-
-  [
-    [tier2Teams, 2, tierLabels.tier2],
-    [tier3Teams, 3, tierLabels.tier3],
-  ].forEach(([teams, tierNumber, tierName]) => {
-    teams.forEach((team) => {
-      const tierLabel = `Tier ${tierNumber} — ${tierName}`;
-      if (team.head.name === "TBD") {
-        groups.push({
-          tierLabel,
-          team: team.name,
-          role: "Head",
-          count: 1,
-          description: team.headDescription,
-        });
-      }
-      const openMembers = team.members.filter((member) => member.name === "TBD").length;
-      if (openMembers > 0) {
-        groups.push({
-          tierLabel,
-          team: team.name,
-          role: "Member",
-          count: openMembers,
-          description: team.memberDescription,
-        });
-      }
-    });
-  });
-
-  return groups;
-}
-
 export const confirmedMembers = computeConfirmedMembers();
-export const openRoles = computeOpenRoles();
