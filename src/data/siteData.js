@@ -38,7 +38,6 @@ export const navLinks = [
   { label: "Speakers", href: "#speakers" },
   { label: "Tickets", href: "#tickets" },
   { label: "Team", href: "#team" },
-  { label: "Join Us", href: "#join" },
 ];
 
 export const socialLinks = [

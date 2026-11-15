@@ -3,7 +3,6 @@ import Hero from "./components/Hero";
 import Speakers from "./components/Speakers";
 import Tickets from "./components/Tickets";
 import Team from "./components/Team";
-import JoinTeam from "./components/JoinTeam";
 import About from "./components/About";
 import Footer from "./components/Footer";
 
@@ -17,7 +16,6 @@ function App() {
         <Speakers />
         <Tickets />
         <Team />
-        <JoinTeam />
       </main>
       <Footer />
     </div>
