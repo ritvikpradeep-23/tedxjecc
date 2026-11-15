@@ -200,18 +200,6 @@ const rawLeadership = {
     "This tier holds overall responsibility for the event. They make the final calls and serve as the required liaison between TEDxJEC and the institution, as well as the TEDx program itself.",
   members: [
     {
-      name: "Ritvik Pradeep",
-      photo: "",
-      role: "Outreach Head",
-      description:
-        "Leads outreach for TEDxJEC — reaching speakers, sponsors, partners and the wider community, and making sure the right people hear about the event and want to be part of it.",
-      longBio:
-        "Leads outreach for TEDxJEC — reaching speakers, sponsors, partners and the wider community, and making sure the right people hear about the event and want to be part of it.",
-      roleDescription:
-        "Leads outreach for TEDxJEC — reaching speakers, sponsors, partners and the wider community, and making sure the right people hear about the event and want to be part of it.",
-      ...anonContact,
-    },
-    {
       name: "Sanvya Sandeep",
       photo: "",
       role: "Organizer",
@@ -338,48 +326,19 @@ const rawTier2Teams = [
 
 const rawTier3Teams = [
   {
-    id: "media",
-    name: "Media",
+    id: "outreach",
+    name: "Outreach",
     description:
-      "This team handles how the event looks and sounds to everyone who isn't in the room: photography, videography, social media, and the written and visual content that goes out around it.",
+      "This team runs everything that reaches the outside world: outreach and partnerships, photography and video, social media, and the stage, decor and tech that make the event work on the day.",
     headDescription:
-      "Decides what gets shot and posted, sets the visual style for the event's social presence, and signs off before anything goes out publicly.",
+      "Leads outreach and sets the direction for the team: speakers, sponsors and partners, the public face of the event, and what gets posted and when.",
     memberDescription:
-      "Shoots photos or video on the day, or works on the graphics and captions going out around it — whichever the team needs covered.",
-    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
+      "Pitches in wherever the team needs it: reaching out to sponsors and partners, shooting or editing content, running stage, decor or tech on the day.",
+    head: { name: "Ritvik Pradeep", photo: "", ...anonContact },
     members: [
       { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
       { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
       { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
-    ],
-  },
-  {
-    id: "ambience",
-    name: "Ambience",
-    description:
-      "This team shapes what the venue actually feels like on the day — stage design, decor, signage, and the overall look of the space.",
-    headDescription:
-      "Designs how the venue looks — stage, signage, decor — and manages what actually gets built and installed before doors open.",
-    memberDescription:
-      "Helps build and set up the decor and signage on event day, and keeps touching things up as the space gets used.",
-    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
-    members: [
-      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
-      { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
-    ],
-  },
-  {
-    id: "tech",
-    name: "Tech",
-    description:
-      "This team keeps the technical side running: AV and lighting coordination, the recording feed, and the event website itself.",
-    headDescription:
-      "Owns AV and lighting cues during the event and makes sure the recording or livestream actually works when it matters.",
-    memberDescription:
-      "Runs a specific technical station on the day — mics, lighting, camera, or the website — and troubleshoots it live if something breaks.",
-    head: { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
-    members: [
       { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
       { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
       { name: "TBD", photo: "", bio: ANON_BIO, ...anonContact },
