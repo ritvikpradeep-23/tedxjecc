@@ -3,48 +3,81 @@ import SectionHeading from "./SectionHeading";
 import Section from "./Section";
 import Reveal from "./Reveal";
 
-// Flatten every seat — leadership, then each core and outreach team's head
-// followed by its members — into one list for the grid.
-function allPeople() {
-  const list = leadership.members.map((p) => ({ ...p, group: "Leadership" }));
-  [...tier2Teams, ...tier3Teams].forEach((team) => {
-    list.push({ ...team.head, role: "Head", group: team.name });
-    team.members.forEach((m) => list.push({ ...m, role: "Member", group: team.name }));
-  });
-  return list;
+function Avatar({ photo, name, size = "w-12 h-12" }) {
+  return photo ? (
+    <img src={photo} alt={name} loading="lazy" className={`${size} rounded-lg object-cover shrink-0`} />
+  ) : (
+    <div className={`${size} rounded-lg bg-white/5 border border-white/10 shrink-0`} aria-hidden="true" />
+  );
 }
 
-function PersonCard({ person, delay }) {
-  const filled = person.name !== "TBD";
+function Name({ name, className = "" }) {
+  const filled = name !== "TBD";
   return (
-    <Reveal delay={delay} className="rounded-xl border border-white/10 bg-white/[0.02] p-5 flex flex-col gap-3">
-      {person.photo ? (
-        <img src={person.photo} alt={person.name} loading="lazy" className="w-16 h-16 rounded-xl object-cover" />
-      ) : (
-        <div className="w-16 h-16 rounded-xl bg-white/5 border border-white/10" aria-hidden="true" />
-      )}
-      <div>
-        <h3 className={filled ? "font-display font-bold text-white text-base" : "font-display font-bold text-white/35 italic text-base"}>
-          {filled ? person.name : "To be announced"}
-        </h3>
-        <p className="text-tedx-red text-xs font-semibold uppercase tracking-wide mt-1">{person.group}</p>
-        {person.role && <p className="text-white/50 text-xs mt-0.5">{person.role}</p>}
+    <span
+      className={`${className} ${
+        filled ? "text-white font-semibold" : "text-white/35 italic"
+      }`}
+    >
+      {filled ? name : "To be announced"}
+    </span>
+  );
+}
+
+// Leadership: one row of seats, each with its own role label.
+function LeadershipCard() {
+  return (
+    <Reveal className="rounded-2xl border border-tedx-red/30 bg-tedx-red/[0.04] p-6">
+      <p className="text-tedx-red text-[11px] font-bold uppercase tracking-[0.2em] mb-5">Leadership</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {leadership.members.map((person, i) => (
+          <div key={i} className="flex items-center gap-3 rounded-xl bg-black/30 border border-white/10 p-3">
+            <Avatar photo={person.photo} name={person.name} />
+            <div className="min-w-0">
+              <Name name={person.name} className="block text-sm truncate" />
+              <span className="block text-white/50 text-[11px] uppercase tracking-wide mt-0.5">{person.role}</span>
+            </div>
+          </div>
+        ))}
       </div>
     </Reveal>
   );
 }
 
-function PeopleGrid() {
+// One team as a tree: the head sits at the top, members hang off a vertical
+// connector line beneath.
+function TeamTree({ team }) {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-      {allPeople().map((person, i) => (
-        <PersonCard key={`${person.group}-${person.role}-${i}`} person={person} delay={(i % 8) * 40} />
-      ))}
-    </div>
+    <Reveal className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 flex flex-col">
+      <h4 className="font-display font-bold text-white text-lg">{team.name}</h4>
+      <div className="h-px w-10 bg-tedx-red mt-2 mb-5" />
+
+      <div className="flex items-center gap-3 rounded-xl bg-tedx-red/5 border border-tedx-red/30 p-3">
+        <Avatar photo={team.head.photo} name={team.head.name} />
+        <div className="min-w-0">
+          <Name name={team.head.name} className="block text-sm truncate" />
+          <span className="block text-tedx-red text-[11px] font-bold uppercase tracking-wide mt-0.5">Head</span>
+        </div>
+      </div>
+
+      {team.members.length > 0 && (
+        <div className="ml-5 mt-3 pl-5 border-l border-white/15 flex flex-col gap-2.5">
+          {team.members.map((member, i) => (
+            <div key={i} className="relative flex items-center gap-3 rounded-lg p-2">
+              <span className="absolute -left-5 top-1/2 w-5 h-px bg-white/15" aria-hidden="true" />
+              <Avatar photo={member.photo} name={member.name} size="w-9 h-9" />
+              <Name name={member.name} className="text-sm truncate" />
+            </div>
+          ))}
+        </div>
+      )}
+    </Reveal>
   );
 }
 
 export default function Team() {
+  const teams = [...tier2Teams, ...tier3Teams];
+
   return (
     <Section id="team" tone="black" container="wide">
       <SectionHeading
@@ -52,7 +85,15 @@ export default function Team() {
         title="The Team"
         subtitle="Everyone behind TEDxJEC, organized across leadership and the core teams."
       />
-      <PeopleGrid />
+
+      <div className="flex flex-col gap-6">
+        <LeadershipCard />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {teams.map((team) => (
+            <TeamTree key={team.id} team={team} />
+          ))}
+        </div>
+      </div>
     </Section>
   );
 }
