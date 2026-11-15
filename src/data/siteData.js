@@ -224,7 +224,7 @@ const rawLeadership = {
     {
       name: "Sanvya Sandeep",
       photo: "",
-      role: "Co-Organizer",
+      role: "Organizer",
       description:
         "Runs point on the big calls — budget sign-off, vendor decisions, what happens if something goes wrong on the day — and represents TEDxJEC to the college administration and the TEDx licensing team.",
       longBio:
